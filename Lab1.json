@@ -1,0 +1,154 @@
+{
+	"info": {
+		"_postman_id": "e2ab2165-a872-4552-a5b3-b5f01962d523",
+		"name": "IsnominLab1",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25647119"
+	},
+	"item": [
+		{
+			"name": "https://www.postman-echo.com/get",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", () => {\r",
+							"  pm.expect(pm.response.code).to.eql(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"The response has all properties\", () => {\r",
+							"    // разобрать json ответ и проверить три свойства\r",
+							"    const responseJson = pm.response.json();\r",
+							"    pm.expect(responseJson.type).to.eql('vip');\r",
+							"    pm.expect(responseJson.name).to.be.a('string');\r",
+							"    pm.expect(responseJson.id).to.have.lengthOf(1);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://www.postman-echo.com/get",
+					"protocol": "https",
+					"host": [
+						"www",
+						"postman-echo",
+						"com"
+					],
+					"path": [
+						"get"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "pokeapi.co",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// test body elements from json\r",
+							"pm.test(\"Body parameters are valid\", () => {\r",
+							"    const responseJson = pm.response.json();\r",
+							"    pm.expect(responseJson.height).to.eql(22);\r",
+							"    pm.expect(responseJson.weight).to.eql(3100);\r",
+							"});\r",
+							"\r",
+							"// test body elements from json\r",
+							"pm.test(\"All abilities are valid\", () => {\r",
+							"    const responseJson = pm.response.json();\r",
+							"    pm.expect(responseJson.abilities).to.length(2);\r",
+							"    pm.expect(responseJson.abilities[0].ability.name).to.eql(\"overgrow\");\r",
+							"    pm.expect(responseJson.abilities[1].ability.name).to.eql(\"shell-armor\");\r",
+							"});\r",
+							"\r",
+							"// test response time\r",
+							"pm.test(\"Response time is less than 350ms\", () => {\r",
+							"  pm.expect(pm.response.responseTime).to.be.below(350);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://pokeapi.co/api/v2/pokemon/torterra",
+					"protocol": "https",
+					"host": [
+						"pokeapi",
+						"co"
+					],
+					"path": [
+						"api",
+						"v2",
+						"pokemon",
+						"torterra"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "zenhabits.net",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// test header elements\r",
+							"pm.test(\"Content is valid\", () => {\r",
+							"    pm.expect(pm.response.headers.get('Content-Encoding')).to.eql('br');\r",
+							"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('text/html; charset=UTF-8');\r",
+							"});\r",
+							"\r",
+							"// test header element\r",
+							"pm.test(\"Server is cloudflare\", () => {\r",
+							"    pm.expect(pm.response.headers.get('Server')).to.eql('cloudflare');\r",
+							"});\r",
+							"\r",
+							"// test body elements from HTML\r",
+							"pm.test(\"Named social are valid\", () => {\r",
+							"    const cheerio = require('cheerio');\r",
+							"    $ = cheerio.load(pm.response.text());\r",
+							"    twitterLink = $('.wide-container .join-cta ul a').text();\r",
+							"    console.log(twitterLink);\r",
+							"    pm.expect(twitterLink).to.eql('TwitterFacebook')\r",
+							"    //pm.expect(responseJson.height).to.eql(22);\r",
+							"    //pm.expect(responseJson.weight).to.eql(3100);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://zenhabits.net/about/",
+					"protocol": "https",
+					"host": [
+						"zenhabits",
+						"net"
+					],
+					"path": [
+						"about",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
