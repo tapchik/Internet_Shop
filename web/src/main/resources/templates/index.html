@@ -1,20 +1,50 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>HelloSpringLeaf</title>
+    <title>Fistashka</title>
     <link rel="stylesheet" th:href="@{/css/index.css}"/>
+    <link rel="stylesheet" th:href="@{/css/button.css}"/>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
 <body>
-<h1>Hello Spring Leaf!</h1>
-<h2 th:text="${sid}"></h2>
+<div class="container">
+<h1>Internet Shop "Fistashka"</h1>
+<p th:text="${sid}">Current sid is </p>
 
-<table>
+<table class="table table-bordered table-hover">
     <thead>
-    <tr>
-        <th>Description</th>
-        <th>Price</th>
-        <th>Available from</th>
-    </tr>
+        <tr>
+            <th>Description</th>
+            <th>Price</th>
+            <th>Available from</th>
+        </tr>
+        <tr>
+            <th>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default" th:onclick="|window.location.href='/sort-by-description-asc'|">Sort Asc</button>
+                    <button type="button" class="btn btn-default" th:onclick="|window.location.href='/sort-by-description-desc'|">Sort Desc</button>
+                </div>
+            </th>
+            <th>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default" th:onclick="|window.location.href='/sort-by-price-asc'|">Sort Asc</button>
+                    <button type="button" class="btn btn-default" th:onclick="|window.location.href='/sort-by-price-desc'|">Sort Desc</button>
+                </div>
+            </th>
+            <th>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default">Sort Asc</button>
+                    <button type="button" class="btn btn-default">Sort Desc</button>
+                </div>
+            </th>
+        </tr>
     </thead>
     <tbody>
     <tr th:each="product : ${products}">
@@ -24,5 +54,6 @@
     </tr>
     </tbody>
 </table>
+</div>
 </body>
 </html>
