@@ -4,6 +4,7 @@ import com.example.springwebapp.model.Product;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import java.util.Optional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,14 +49,43 @@ public class Home {
 
     @RequestMapping("/")
     public String home() {
-        return "index";
+        return "navigation";
     }
 
-    @RequestMapping("/home-with-session")
+    /*@RequestMapping("/catalogue")
     public String homeWithSession(Model model, HttpSession session) {
         String sid = session.getId();
         model.addAttribute("sid", sid);
         model.addAttribute("products", storage.getProductsUnsorted());
+        return "index";
+    }*/
+
+    @RequestMapping("/catalogue")
+    public String homeWithSession(Model model, HttpSession session,
+                                  @RequestParam(required=false) String filter,
+                                  @RequestParam(name="sort-by", defaultValue = "none") String sort_by
+                                  ) {
+        String sid = session.getId();
+        model.addAttribute("sid", sid);
+        ArrayList<Product> products;
+        if (sort_by=="description-asc") {
+            products = storage.getProductsSortedByDescriptionAsc();
+        }
+        else if (sort_by=="description-desc") {
+            products = storage.getProductsSortedByDescriptionDesc();
+        }
+        else if (sort_by=="price-asc") {
+            products = storage.getProductsSortedByPriceAsc();
+        }
+        else if (sort_by=="price-desc") {
+            products = storage.getProductsSortedByPriceDesc();
+        }
+        else {
+            products = storage.getProductsUnsorted();
+        }
+
+        model.addAttribute("products", products);
+        model.addAttribute("filter", filter);
         return "index";
     }
 
