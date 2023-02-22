@@ -4,6 +4,8 @@ import com.example.springwebapp.model.Product;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.io.Console;
 import java.util.Optional;
 
 import java.util.ArrayList;
@@ -67,17 +69,18 @@ public class Home {
                                   ) {
         String sid = session.getId();
         model.addAttribute("sid", sid);
+        System.out.println(sort_by);
         ArrayList<Product> products;
-        if (sort_by=="description-asc") {
+        if (sort_by.equals("description-asc")) {
             products = storage.getProductsSortedByDescriptionAsc();
         }
-        else if (sort_by=="description-desc") {
+        else if (sort_by.equals("description-desc")) {
             products = storage.getProductsSortedByDescriptionDesc();
         }
-        else if (sort_by=="price-asc") {
+        else if (sort_by.equals("price-asc")) {
             products = storage.getProductsSortedByPriceAsc();
         }
-        else if (sort_by=="price-desc") {
+        else if (sort_by.equals("price-desc")) {
             products = storage.getProductsSortedByPriceDesc();
         }
         else {
