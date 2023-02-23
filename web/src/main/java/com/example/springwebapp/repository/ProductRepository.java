@@ -16,12 +16,12 @@ public class ProductRepository {
 
     private ArrayList<Product> FillStorage() {
         ArrayList<Product> a_box = new ArrayList<Product>();
-        a_box.add(new Product("https://cdn1.ozone.ru/s3/multimedia-2/6416880254.jpg","iPhone 10", 41499, new Date()));
-        a_box.add(new Product("https://cdn1.ozone.ru/s3/multimedia-2/6416880254.jpg","iPhone 11", 49999, new Date()));
-        a_box.add(new Product("https://cdn1.ozone.ru/s3/multimedia-2/6416880254.jpg","iPhone 12", 54999, new Date()));
-        a_box.add(new Product("https://cdn1.ozone.ru/s3/multimedia-2/6416880254.jpg","Microwave", 13499, new Date()));
-        a_box.add(new Product("https://cdn1.ozone.ru/s3/multimedia-2/6416880254.jpg","Samsung S22", 59999, new Date()));
-        a_box.add(new Product("https://cdn1.ozone.ru/s3/multimedia-2/6416880254.jpg","Samsung S22 Ultra", 65999, new Date()));
+        a_box.add(new Product("iph010", "https://cdn1.ozone.ru/s3/multimedia-2/6416880254.jpg","iPhone 10", 41499, new Date()));
+        a_box.add(new Product("iph011", "https://cdn1.ozone.ru/s3/multimedia-2/6416880254.jpg","iPhone 11", 49999, new Date()));
+        a_box.add(new Product("iph012", "https://cdn1.ozone.ru/s3/multimedia-2/6416880254.jpg","iPhone 12", 54999, new Date()));
+        a_box.add(new Product("utencWave", "https://cdn1.ozone.ru/s3/multimedia-2/6416880254.jpg","Microwave", 13499, new Date()));
+        a_box.add(new Product("SamS22", "https://cdn1.ozone.ru/s3/multimedia-2/6416880254.jpg","Samsung S22", 59999, new Date()));
+        a_box.add(new Product("SamS22U", "https://cdn1.ozone.ru/s3/multimedia-2/6416880254.jpg","Samsung S22 Ultra", 65999, new Date()));
         return a_box;
     }
 

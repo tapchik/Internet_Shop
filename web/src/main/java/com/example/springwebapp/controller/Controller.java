@@ -52,4 +52,12 @@ public class Controller {
         model.addAttribute("filter", filter);
         return "fragments/listofproducts";
     }
+
+    @RequestMapping("/add_to_cart")
+    public String addToCart(Model model, HttpSession session, @RequestParam String product_id) {
+        String sid = session.getId();
+        int items_in_cart = 5; //TODO count real number of items in cart
+        model.addAttribute("items-in-cart", items_in_cart);
+        return "fragments/cart-counter";
+    }
 }
