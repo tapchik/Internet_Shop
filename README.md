@@ -1,6 +1,11 @@
 # Internet_Shop
 Java + Spring Boot
 
+TODO:
+1. Украсить index.html (по div'ам)
+2. Добавить кнопку "Добавить в корзина" и картинку
+3. Реализовать фильтр + сортировка
+
 ### Lab 1. Postman
 - File `Lab1.json` - Export/import Postman collection. 
 

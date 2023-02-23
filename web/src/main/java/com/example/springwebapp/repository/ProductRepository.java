@@ -1,13 +1,16 @@
-package com.example.springwebapp.model;
+package com.example.springwebapp.repository;
+
+import com.example.springwebapp.model.Product;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 
-public class Storage {
+public class ProductRepository {
 
     private ArrayList<Product> storage;
 
-    public Storage() {
+    public ProductRepository() {
         this.storage = FillStorage();
     }
 
@@ -27,7 +30,7 @@ public class Storage {
     }
 
     public ArrayList<Product> getProductsSortedByDescriptionAsc() {
-        this.storage.sort((o1, o2) -> o1.getDescription().compareTo(o2.getDescription()));
+        this.storage.sort(Comparator.comparing(Product::getDescription));
         return this.storage;
     }
 
