@@ -16,12 +16,12 @@ public class ProductRepository {
 
     private ArrayList<Product> FillStorage() {
         ArrayList<Product> a_box = new ArrayList<Product>();
-        a_box.add(new Product("https://cdn1.ozone.ru/s3/multimedia-2/6416880254.jpg","iPhone 10", 41499, new Date()));
-        a_box.add(new Product("https://cdn1.ozone.ru/s3/multimedia-2/6416880254.jpg","iPhone 11", 49999, new Date()));
-        a_box.add(new Product("https://cdn1.ozone.ru/s3/multimedia-2/6416880254.jpg","iPhone 12", 54999, new Date()));
-        a_box.add(new Product("https://cdn1.ozone.ru/s3/multimedia-2/6416880254.jpg","Microwave", 13499, new Date()));
-        a_box.add(new Product("https://cdn1.ozone.ru/s3/multimedia-2/6416880254.jpg","Samsung S22", 59999, new Date()));
-        a_box.add(new Product("https://cdn1.ozone.ru/s3/multimedia-2/6416880254.jpg","Samsung S22 Ultra", 65999, new Date()));
+        a_box.add(new Product("https://cdn1.ozone.ru/s3/multimedia-2/6416880254.jpg","iPhone 10", 41499, new Date(), "1"));
+        a_box.add(new Product("https://cdn1.ozone.ru/s3/multimedia-2/6416880254.jpg","iPhone 11", 49999, new Date(), "2"));
+        a_box.add(new Product("https://cdn1.ozone.ru/s3/multimedia-2/6416880254.jpg","iPhone 12", 54999, new Date(), "3"));
+        a_box.add(new Product("https://cdn1.ozone.ru/s3/multimedia-2/6416880254.jpg","Microwave", 1113499, new Date(), "4"));
+        a_box.add(new Product("https://cdn1.ozone.ru/s3/multimedia-2/6416880254.jpg","Samsung S22", 159999, new Date(),"5"));
+        a_box.add(new Product("https://cdn1.ozone.ru/s3/multimedia-2/6416880254.jpg","Samsung S22 Ultra", 65999, new Date(), "6"));
         return a_box;
     }
 
@@ -29,7 +29,7 @@ public class ProductRepository {
         ArrayList<Product> products = new ArrayList<Product>();
         if (filter!=null) {
             for (Product product: this.storage) {
-                if (product.getDescription().contains(filter)) {
+                if (product.getDescription().toLowerCase().contains(filter.toLowerCase())) {
                     products.add(product);
                 }
             }
