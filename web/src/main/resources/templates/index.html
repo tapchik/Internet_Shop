@@ -3,7 +3,7 @@
 <head>
     <title>Fistashka</title>
     <link rel="stylesheet" th:href="@{/css/index.css}"/>
-    <link rel="stylesheet" th:href="@{/css/button.css}"/>
+    <link rel="stylesheet" th:href="@{/css/buttons.css}"/>
     <link rel="stylesheet" th:href="@{/css/listofproducts.css}"/>
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -34,8 +34,8 @@
                     $("#listik").html(result);
                     history.replaceState(null,null, window.location.pathname + parameters);
                     //window.history.pushState({}, document.title, "/" + current_path + parameters);
-                }});
-            });
+            }});
+        });
     });
     </script>
 
@@ -48,12 +48,31 @@
     });
     </script>
 
+    <script>
+    // adds product to cart
+    $(document).ready(function() {
+        $(".add-to-cart").click(function() {
+            var product_id = $(this).val().toString();
+            console.log(product_id);
+            var parameters = `?product_id=${product_id}`;
+            $.ajax({type: "POST",
+                url: '/add_to_cart' + parameters,
+                dataType: "text",
+                success:function(result) {
+                    $("#cart-count").html(result);
+            }});
+        });
+    });
+    </script>
+
     </head>
 
     <body>
     <div class="container">
     <h1>Internet Shop "Fistashka"</h1>
     <p th:text="${sid}">Current sid is </p>
+
+    <a class="cart-count" id="cart-count">0</a>
 
     <form action="catalogue" id="filteringform">
         <div class="form-group">

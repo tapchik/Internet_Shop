@@ -1,5 +1,5 @@
 <!-- this fragment displays single product details based on given arguments -->
-<div th:fragment="product(image_path, description, price, availableFrom)" class="product-info">
+<div th:fragment="product(image_path, description, price, availableFrom, id)" class="product-info">
 
     <div>
         <img th:src="${image_path}" style="width:200px;height:200px;">
@@ -10,7 +10,7 @@
     </div>
     <div>
         <div th:text="${price}" class="price-tag"></div>
-        <button>Add to cart</button>
+        <button class="add-to-cart" name="add-to-cart" th:value="${id}">Add to cart</button>
     </div>
 
 </div>
