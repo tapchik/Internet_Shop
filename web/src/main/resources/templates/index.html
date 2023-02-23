@@ -28,7 +28,7 @@
             var api_path = `/listofproducts`;
             $.ajax({type: "POST",
                 url: api_path + parameters,
-                data: {"filter": filter, "sort_by": sort_by},
+                //data: {"filter": filter, "sort_by": sort_by},
                 dataType: "text",
                 success:function(result) {
                     $("#listik").html(result);
