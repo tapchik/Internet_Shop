@@ -25,6 +25,10 @@ public class ProductRepository {
         return a_box;
     }
 
+    public void getProducts(String filter, String sort_by) {
+
+    }
+
     public ArrayList<Product> getProductsUnsorted() {
         return this.storage;
     }

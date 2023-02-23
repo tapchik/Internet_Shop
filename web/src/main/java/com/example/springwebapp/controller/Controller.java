@@ -13,18 +13,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
 
-/**
- * Created by Denis on 2/20/2016.
- */
-
 @org.springframework.stereotype.Controller
 public class Controller {
 
     private ProductRepository productRepository;
-
-    public Controller() {
-        this.productRepository = new ProductRepository();
-    }
 
     @RequestMapping("/")
     public String home() {
@@ -38,7 +30,6 @@ public class Controller {
                                   ) {
         String sid = session.getId();
         model.addAttribute("sid", sid);
-        System.out.println(sort_by);
         ArrayList<Product> products;
         if (sort_by.equals("description-asc")) {
             products = productRepository.getProductsSortedByDescriptionAsc();
