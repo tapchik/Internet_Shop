@@ -16,7 +16,7 @@ import javax.servlet.http.HttpSession;
 @org.springframework.stereotype.Controller
 public class Controller {
 
-    private ProductRepository productRepository;
+    public ProductRepository productRepository;
 
     public Controller() {
         productRepository = new ProductRepository();
