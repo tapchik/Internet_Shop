@@ -10,7 +10,7 @@ public class Product {
     private Date availableFrom;
     private String id;
 
-    public Product(final String id, final String image_path, final String description, final Integer price, final Date availableFrom) {
+    public Product(final String image_path, final String description, final Integer price, final Date availableFrom, final String id) {
         this.image_path = image_path;
         this.description = description;
         this.price = price;
@@ -38,10 +38,6 @@ public class Product {
         return new_price + "₽";
     }
 
-    public String getId() {
-        return id;
-    }
-
     public String getImage_path() {
         return this.image_path;
     }
@@ -49,6 +45,8 @@ public class Product {
     public void setImage_path(final String availableFrom) {
         this.image_path = image_path;
     }
+
+    public String getId() { return this.id; }
 
     public Date getAvailableFrom() {
         return this.availableFrom;
