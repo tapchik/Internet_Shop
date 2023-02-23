@@ -1,14 +1,16 @@
-package com.example.springwebapp.model;
+package com.example.springwebapp.repository;
+
+import com.example.springwebapp.model.Product;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
 
-public class Storage {
+public class ProductRepository {
 
     private ArrayList<Product> storage;
 
-    public Storage() {
+    public ProductRepository() {
         this.storage = FillStorage();
     }
 
