@@ -18,6 +18,10 @@ public class Controller {
 
     private ProductRepository productRepository;
 
+    public Controller() {
+        productRepository = new ProductRepository();
+    }
+
     @RequestMapping("/")
     public String home() {
         return "navigation";
