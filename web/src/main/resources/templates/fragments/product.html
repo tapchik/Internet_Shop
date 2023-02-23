@@ -1,8 +1,8 @@
 <!-- this fragment displays single product details based on given arguments -->
-<div th:fragment="product(description, price, availableFrom)" class="product-info">
+<div th:fragment="product(image_path, description, price, availableFrom)" class="product-info">
 
     <div>
-        <img src="https://cdn1.ozone.ru/s3/multimedia-2/6416880254.jpg" style="width:200px;height:200px;">
+        <img th:src="${image_path}" style="width:200px;height:200px;">
     </div>
     <div>
         <a th:text="${description}"></a>

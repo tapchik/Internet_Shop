@@ -34,23 +34,7 @@ public class Controller {
                                   ) {
         String sid = session.getId();
         model.addAttribute("sid", sid);
-        ArrayList<Product> products;
-        if (sort_by.equals("description-asc")) {
-            products = productRepository.getProductsSortedByDescriptionAsc();
-        }
-        else if (sort_by.equals("description-desc")) {
-            products = productRepository.getProductsSortedByDescriptionDesc();
-        }
-        else if (sort_by.equals("price-asc")) {
-            products = productRepository.getProductsSortedByPriceAsc();
-        }
-        else if (sort_by.equals("price-desc")) {
-            products = productRepository.getProductsSortedByPriceDesc();
-        }
-        else {
-            products = productRepository.getProductsUnsorted();
-        }
-
+        ArrayList<Product> products = productRepository.getProducts(filter=filter,sort_by=sort_by);
         model.addAttribute("products", products);
         model.addAttribute("filter", filter);
         return "index";
@@ -63,58 +47,9 @@ public class Controller {
     ) {
         String sid = session.getId();
         model.addAttribute("sid", sid);
-        System.out.println(sort_by);
-        ArrayList<Product> products;
-        if (sort_by.equals("description-asc")) {
-            products = productRepository.getProductsSortedByDescriptionAsc();
-        }
-        else if (sort_by.equals("description-desc")) {
-            products = productRepository.getProductsSortedByDescriptionDesc();
-        }
-        else if (sort_by.equals("price-asc")) {
-            products = productRepository.getProductsSortedByPriceAsc();
-        }
-        else if (sort_by.equals("price-desc")) {
-            products = productRepository.getProductsSortedByPriceDesc();
-        }
-        else {
-            products = productRepository.getProductsUnsorted();
-        }
-
+        ArrayList<Product> products = productRepository.getProducts(filter=filter,sort_by=sort_by);
         model.addAttribute("products", products);
         model.addAttribute("filter", filter);
         return "fragments/listofproducts";
-    }
-
-    @RequestMapping(value="/sort-by-description-asc")
-    public String sortByDescriptionAsc(Model model, HttpSession session) {
-        String sid = session.getId();
-        model.addAttribute("sid", sid);
-        model.addAttribute("products", productRepository.getProductsSortedByDescriptionAsc());
-        return "index";
-    }
-
-    @RequestMapping(value="/sort-by-description-desc")
-    public String sortByDescriptionDesc(Model model, HttpSession session) {
-        String sid = session.getId();
-        model.addAttribute("sid", sid);
-        model.addAttribute("products", productRepository.getProductsSortedByDescriptionDesc());
-        return "index";
-    }
-
-    @RequestMapping(value="/sort-by-price-asc")
-    public String sortByPriceAsc(Model model, HttpSession session) {
-        String sid = session.getId();
-        model.addAttribute("sid", sid);
-        model.addAttribute("products", productRepository.getProductsSortedByPriceAsc());
-        return "index";
-    }
-
-    @RequestMapping(value="/sort-by-price-desc")
-    public String sortByPriceDesc(Model model, HttpSession session) {
-        String sid = session.getId();
-        model.addAttribute("sid", sid);
-        model.addAttribute("products", productRepository.getProductsSortedByPriceDesc());
-        return "index";
     }
 }

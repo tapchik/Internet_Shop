@@ -1,4 +1,4 @@
 <!-- this fragment displays a list of product fragments -->
 <div th:each="product : ${products}" class="list-of-products-container">
-    <div th:insert="fragments/product.html :: product(${product.description}, ${product.price}, ${product.availableFrom})"> </div>
+    <div th:insert="fragments/product.html :: product(${product.image_path}, ${product.description}, ${product.price}, ${product.availableFrom})"> </div>
 </div>
