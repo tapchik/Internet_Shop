@@ -4,6 +4,7 @@
     <title>Fistashka</title>
     <link rel="stylesheet" th:href="@{/css/index.css}"/>
     <link rel="stylesheet" th:href="@{/css/button.css}"/>
+    <link rel="stylesheet" th:href="@{/css/listofproducts.css}"/>
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
@@ -13,15 +14,34 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+    <!--
+    <script>
+    $(document).ready(function(){
+      $("submit-btn").click(function(e){
+          e.preventDefault();
+        $var path = (location.pathname+location.search).substr(1);
+        $.ajax({type: "POST",
+                url: path},
+                success:function(result){
+          $("listik").html(result);
+        }});
+      });
+    });
+    </script> -->
+
+    <script>
+    let x = document.querySelectorAll(".price-tag");
+    for (let i = 0, len = x.length; i < len; i++) {
+        let num = Number(x[i].innerHTML)
+                .toLocaleString('en');
+        x[i].innerHTML = num;
+        x[i].classList.add("currSign");
+    }
+</script>
+
 </head>
 <body>
-
-<script>
-      $(document).ready(function() {
-          $("#radio1").prop("checked", true);
-        });
-    </script>
-
 <div class="container">
 <h1>Internet Shop "Fistashka"</h1>
 <p th:text="${sid}">Current sid is </p>
@@ -49,47 +69,33 @@
             <input type="radio" name="sort-by" value="none" id="radio5"> Don't sort ╳
         </label>
     </div>
-    <button type="submit" class="btn btn-primary">Apply</button>
+    <button>Apply</button> <!--type="submit"  class="btn btn-primary" id="submit-btn"-->
 </form>
 
-<table class="table table-bordered table-hover">
-    <thead>
-        <tr>
-            <th>Description</th>
-            <th>Price</th>
-            <th>Available from</th>
+    <!-- older vrsion of list of products as a table
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Available from</th>
+            </tr>
+        </thead>
+        <tbody>
+        <tr th:each="product : ${products}">
+            <td th:text="${product.description}"></td>
+            <td th:text="${product.price}"></td>
+            <td th:text="${product.availableFrom}"></td>
         </tr>
-        <!--
-        <tr>
-            <th>
-                <div class="btn-group">
-                    <button type="button" class="btn btn-default" th:onclick="|window.location.href='/sort-by-description-asc'|">Sort Asc</button>
-                    <button type="button" class="btn btn-default" th:onclick="|window.location.href='/sort-by-description-desc'|">Sort Desc</button>
-                </div>
-            </th>
-            <th>
-                <div class="btn-group">
-                    <button type="button" class="btn btn-default" th:onclick="|window.location.href='/sort-by-price-asc'|">Sort Asc</button>
-                    <button type="button" class="btn btn-default" th:onclick="|window.location.href='/sort-by-price-desc'|">Sort Desc</button>
-                </div>
-            </th>
-            <th>
-                <div class="btn-group">
-                    <button type="button" class="btn btn-default">Sort Asc</button>
-                    <button type="button" class="btn btn-default">Sort Desc</button>
-                </div>
-            </th>
-        </tr>
-        -->
-    </thead>
-    <tbody>
-    <tr th:each="product : ${products}">
-        <td th:text="${product.description}"></td>
-        <td th:text="${product.price}"></td>
-        <td th:text="${product.availableFrom}"></td>
-    </tr>
-    </tbody>
-</table>
+        </tbody>
+    </table> -->
+
+    <!-- TODO include list of products fragment-->
+    <div th:insert="fragments/listofproducts.html :: div" id="listik"></div>
+
+    <!-- for testing
+    <a th:insert="fragments/product.html :: product('tut','2', '12')"> </a>  -->
+
 </div>
 </body>
 </html>
