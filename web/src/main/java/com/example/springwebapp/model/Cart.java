@@ -3,8 +3,6 @@ package com.example.springwebapp.model;
 import java.util.HashMap;
 
 public class Cart {
-    //TODO по ключу product_id должен возвращать количество таких товаров в корзине
-    // желательно сделать class Cart наследником словаря, например
     HashMap<String, Integer> cart_storage;
 
     public Cart() {
@@ -29,5 +27,13 @@ public class Cart {
 
     public void deleteAllFromCart() {
         cart_storage.clear();
+    }
+
+    public int countOfAllProducts() {
+        Integer count = 0;
+        for(Integer val: cart_storage.values()) {
+            count += val;
+        }
+        return count;
     }
 }
