@@ -34,12 +34,9 @@
     // var str = 'https://www.codeproject.com/tips/1009583/how-to-use-cookies-in-jquery-without-a-plugin';
     $(document).ready(function() {
         if (!getCookie('current_city')) {
-            //$.cookie('current_city', 'No city chosen', { expires: expirationDate });
-            //setCookie('current_city', 'Березники');
             var city = "No city selected";
             console.log('Current city cookie is not set');
         } else {
-            //var city = $.cookie('current_city');
             var city = getCookie('current_city');
             console.log('Current city coolie equals ' + city);
         }
@@ -71,13 +68,10 @@
 
     <script>
     $(document).ready(function() {
-
         // checks 'Don't sort' by default
         if ($('input[name="sort-by"]:checked').length == 0) {
             $('#radio5').prop('checked', true);
         }
-
-        //
     });
     </script>
 
@@ -97,6 +91,12 @@
                     success:function(result) {
                         $(".cart-counter").html(result);
                 }});
+            });
+        </script>
+
+        <script>
+            $('body').on('click', '#cart-btn', function() {
+                window.location.replace("/checkout");
             });
         </script>
 
@@ -126,36 +126,8 @@
 
             <div th:insert="fragments/listofproducts.html :: div" id="listik"></div>
 
-            <!-- Modal -->
-            <div class="modal fade bd-example-modal-sm" id="pick-a-city" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-sm" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Pick your city</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <select class="form-select" name="city-selected" aria-label="Default select example">
-                                <option value="none"selected>Choose your city</option>
-                                <option value="Berezniki">Berezniki</option>
-                                <option value="Perm">Perm</option>
-                                <option value="Moscow">Moscow</option>
-                                <option value="Chaykovsk">Chaykovsk</option>
-                                <option value="Polazna">Polazna</option>
-                                <option value="Dobryanka">Dobryanka</option>
-                            </select>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary" id="save-current-city" data-dismiss="modal">Save changes</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <div th:insert="fragments/modal-city.html :: div"></div>
 
         </div>
     </body>
-
 </html>

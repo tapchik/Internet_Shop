@@ -3,7 +3,7 @@ package com.example.springwebapp.model;
 import java.util.HashMap;
 
 public class Cart {
-    HashMap<String, Integer> cart_storage;
+    public HashMap<String, Integer> cart_storage;
 
     public Cart() {
         cart_storage = new HashMap<String, Integer>();
@@ -35,5 +35,9 @@ public class Cart {
             count += val;
         }
         return count;
+    }
+
+    public HashMap<String, Integer> getContent() {
+        return this.cart_storage;
     }
 }
