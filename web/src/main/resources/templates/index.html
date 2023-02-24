@@ -72,7 +72,7 @@
     <h1>Internet Shop "Fistashka"</h1>
     <p th:text="${sid}">Current sid is </p>
 
-    <a class="cart-count" id="cart-count">0</a>
+    <div id="cart-count" th:insert="fragments/cart-counter.html :: div"></div>
 
     <form action="catalogue" id="filteringform">
         <div class="form-group">
