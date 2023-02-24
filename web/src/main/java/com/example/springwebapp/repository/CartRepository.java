@@ -1,30 +1,20 @@
 package com.example.springwebapp.repository;
-import java.util.HashMap;
+
+import com.example.springwebapp.model.Cart;
+
+import javax.servlet.http.HttpSession;
 
 public class CartRepository {
-    HashMap <String, Integer> cart_storage;
 
-    public CartRepository() {
-        cart_storage = new HashMap<String, Integer>();
+    //TODO по ключу session нужно хранить Cart
+
+    public void addProductToCart(HttpSession session, String product_id) {
+        //TODO если product_id добавляется впервые - его количество = 1
+        // если product_id уже есть в cart - увеличить его количество в корзине += 1
     }
 
-    public void AddToCart(String id) {
-        if (!cart_storage.containsKey(id)) {
-            cart_storage.put(id, 1);
-        }
-        else {
-            cart_storage.put(id, cart_storage.get(id)+1);
-        }
-    }
-
-    public void DeleteOneFromCart(String id) {
-        cart_storage.put(id, cart_storage.get(id)-1);
-        if (cart_storage.get(id).equals(0)) {
-            cart_storage.remove(id);
-        }
-    }
-
-    public void DeleteAllFromCart() {
-        cart_storage.clear();
+    public Cart getCart(HttpSession session) {
+        //TODO возвращать сущность Cart по указанному session
+        return new Cart();
     }
 }
