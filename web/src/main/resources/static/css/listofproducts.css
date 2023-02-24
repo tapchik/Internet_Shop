@@ -25,3 +25,16 @@
     font-size: 24px;
     color: green;
 }
+
+.cart-items-at-checkout-container > div {
+    background-color: #f1f1f1;
+        margin: 10px;
+        text-align: center;
+        line-height: 75px;
+        font-size: 15px;
+}
+
+.cart-item-info {
+    display: flex;
+        justify-content: space-between;
+}

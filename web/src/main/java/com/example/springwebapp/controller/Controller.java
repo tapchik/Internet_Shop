@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -54,8 +55,9 @@ public class Controller {
 
     @RequestMapping("/checkout")
     public String documentCheckout(Model model, HttpSession session) {
-        Cart cart = cartRepository.getCart(session);
-        model.addAttribute("cart", cart);
+        HashMap<String, Integer> cart_items = cartRepository.getCart(session).cart_storage;
+        model.addAttribute("cart_items", cart_items);
+
         return "checkout";
     }
 
