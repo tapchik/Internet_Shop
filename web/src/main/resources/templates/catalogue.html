@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Fistashka</title>
+    <link rel="stylesheet" th:href="@{/css/index.css}"/>
+    <link rel="stylesheet" th:href="@{/css/buttons.css}"/>
+    <link rel="stylesheet" th:href="@{/css/listofproducts.css}"/>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+    <script>
+
+    function setCookie(key, value) {
+        var expires = new Date();
+        var minutes = 10;
+        expires.setTime(expires.getTime() + minutes * 60 * 1000); //
+        document.cookie = key + '=' + value + ';expires=' + expires.toUTCString();
+    }
+
+    function getCookie(key) {
+        var keyValue = document.cookie.match('(^|;) ?' + key + '=([^;]*)(;|$)');
+        return keyValue ? keyValue[2] : null;
+    }
+
+    // CITY PICKER
+    // learned from here
+    // var str = 'https://www.codeproject.com/tips/1009583/how-to-use-cookies-in-jquery-without-a-plugin';
+    $(document).ready(function() {
+        if (!getCookie('current_city')) {
+            //$.cookie('current_city', 'No city chosen', { expires: expirationDate });
+            //setCookie('current_city', 'Березники');
+            var city = "No city selected";
+            console.log('Current city cookie is not set');
+        } else {
+            //var city = $.cookie('current_city');
+            var city = getCookie('current_city');
+            console.log('Current city coolie equals ' + city);
+        }
+        $('#interface-current-city').text(city);
+    });
+    </script>
+
+    <script>
+    // refreshes list of products without reloading page
+    $(document).ready(function() {
+        $("#filteringform").submit(function(e) {
+            e.preventDefault();
+            var filter = $('input[name=filter]').val().toString();
+            var sort_by = $('input[name=sort-by]:checked').val().toString();
+            var parameters = `?filter=${filter}&sort-by=${sort_by}`;
+            var current_path = '/catalogue';
+            var api_path = `/listofproducts`;
+            $.ajax({type: "POST",
+                url: api_path + parameters,
+                //data: {"filter": filter, "sort_by": sort_by},
+                dataType: "text",
+                success:function(result) {
+                    $("#listik").html(result);
+                    history.replaceState(null, null, window.location.pathname + parameters); // could use pushState
+            }});
+        });
+    });
+    </script>
+
+    <script>
+    $(document).ready(function() {
+
+        // checks 'Don't sort' by default
+        if ($('input[name="sort-by"]:checked').length == 0) {
+            $('#radio5').prop('checked', true);
+        }
+
+        //
+    });
+    </script>
+
+    </head>
+
+    <body>
+
+        <script>
+            // adds product to cart
+            $('body').on('click', '.add-to-cart', function() {
+                var product_id = $(this).val().toString();
+                console.log("Adding to cart product with id: " + product_id);
+                var parameters = `?product_id=${product_id}`;
+                $.ajax({type: "POST",
+                    url: '/add_to_cart' + parameters,
+                    dataType: "text",
+                    success:function(result) {
+                        $(".cart-counter").html(result);
+                }});
+            });
+        </script>
+
+        <script>
+            // script saves chosen city to cookies and changes text in interface
+            $('body').on('click', '#save-current-city', function() {
+                var city = $("select[name='city-selected']").val();
+                if (city != "none") {
+                    setCookie('current_city', city);
+                    console.log("Cookie 'current_city' was saved with value: " + city);
+                    $('#interface-current-city').text(city);
+                }
+            });
+        </script>
+
+        <div class="container">
+
+            <h1>Internet Shop "Fistashka"</h1>
+
+            <div th:insert="fragments/city-picker.html :: div"></div>
+
+            <p th:text="${sid}">Current sid is </p>
+
+            <div th:insert="fragments/cart-counter.html :: div"></div>
+
+            <div th:insert="fragments/filtering-form.html :: div"></div>
+
+            <div th:insert="fragments/listofproducts.html :: div" id="listik"></div>
+
+            <!-- Modal -->
+            <div class="modal fade bd-example-modal-sm" id="pick-a-city" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-sm" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Pick your city</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <select class="form-select" name="city-selected" aria-label="Default select example">
+                                <option value="none"selected>Choose your city</option>
+                                <option value="Berezniki">Berezniki</option>
+                                <option value="Perm">Perm</option>
+                                <option value="Moscow">Moscow</option>
+                                <option value="Chaykovsk">Chaykovsk</option>
+                                <option value="Polazna">Polazna</option>
+                                <option value="Dobryanka">Dobryanka</option>
+                            </select>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" id="save-current-city" data-dismiss="modal">Save changes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </body>
+
+</html>

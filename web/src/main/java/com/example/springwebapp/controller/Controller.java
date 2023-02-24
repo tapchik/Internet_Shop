@@ -1,5 +1,6 @@
 package com.example.springwebapp.controller;
 
+import com.example.springwebapp.model.Cart;
 import com.example.springwebapp.model.Product;
 import com.example.springwebapp.repository.CartRepository;
 import com.example.springwebapp.repository.ProductRepository;
@@ -29,37 +30,39 @@ public class Controller {
 
     @RequestMapping("/")
     public String home() {
-        return "navigation";
-    }
-
-    @RequestMapping("/catalogue")
-    public String homeWithSession(Model model, HttpSession session,
-                                  @RequestParam(required=false) String filter,
-                                  @RequestParam(name="sort-by", defaultValue = "none") String sort_by
-                                  ) {
-        // adding attribute "products"
-        ArrayList<Product> products = productRepository.getProducts(filter=filter,sort_by=sort_by);
-        model.addAttribute("products", products);
-        model.addAttribute("filter", filter);
-        // section adding attribute "items_in_cart"
-        int value = cartRepository.countItemsInCart(session);
-        String items_in_cart = String.valueOf(value);
-            //String items_in_cart = String.valueOf(temporary_count); //TODO count real number of items in cart
-        model.addAttribute("items_in_cart", items_in_cart);
-        // adding attribute "sid"
-        String sid = session.getId();
-        model.addAttribute("sid", sid);
-        // returning index.html
         return "index";
     }
 
-    @RequestMapping("/listofproducts")
-    public String listOfProductsFragment(Model model, HttpSession session,
+    @RequestMapping("/catalogue")
+    public String documentCatalogue(Model model, HttpSession session,
                                   @RequestParam(required=false) String filter,
-                                  @RequestParam(name="sort-by", defaultValue = "none") String sort_by
-    ) {
+                                  @RequestParam(name="sort-by", defaultValue = "none") String sort_by) {
+
+        ArrayList<Product> products = productRepository.getProducts(filter=filter,sort_by=sort_by);
+        model.addAttribute("products", products);
+        model.addAttribute("filter", filter);
+
+        int value = cartRepository.countItemsInCart(session);
+        String items_in_cart = String.valueOf(value);
+        model.addAttribute("items_in_cart", items_in_cart);
+
         String sid = session.getId();
         model.addAttribute("sid", sid);
+
+        return "catalogue";
+    }
+
+    @RequestMapping("/checkout")
+    public String documentCheckout(Model model, HttpSession session) {
+        Cart cart = cartRepository.getCart(session);
+        model.addAttribute("cart", cart);
+        return "checkout";
+    }
+
+    @RequestMapping("/listofproducts")
+    public String fragmentListOfProducts(Model model, HttpSession session,
+                                  @RequestParam(required=false) String filter,
+                                  @RequestParam(name="sort-by", defaultValue = "none") String sort_by) {
         ArrayList<Product> products = productRepository.getProducts(filter=filter,sort_by=sort_by);
         model.addAttribute("products", products);
         String items_in_cart = String.valueOf(temporary_count); //TODO count real number of items in cart
@@ -68,11 +71,8 @@ public class Controller {
     }
 
     @RequestMapping("/add_to_cart")
-    public String addToCart(Model model, HttpSession session, @RequestParam(name="product_id") String product_id) {
-        String sid = session.getId();
+    public String fragmentCartCounterButton(Model model, HttpSession session, @RequestParam(name="product_id") String product_id) {
         cartRepository.addProductToCart(session, product_id);
-            //this.temporary_count += 1;
-            //String items_in_cart = String.valueOf(temporary_count); //TODO count real number of items in cart
         int value = cartRepository.countItemsInCart(session);
         String items_in_cart = String.valueOf(value);
         model.addAttribute("items_in_cart", items_in_cart);
