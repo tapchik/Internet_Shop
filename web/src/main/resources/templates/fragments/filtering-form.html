@@ -1,0 +1,28 @@
+<!-- this fragment displays form for filtering and sorting -->
+<div class="filteringform-container" xmlns:th="http://www.w3.org/1999/xhtml">
+  <form action="catalogue" id="filteringform">
+    <div class="form-group">
+      <label for="usr">Filter by product description: </label>
+      <input type="text" name="filter" th:value="${filter}" class="form-control" id="usr" placeholder="Apply filter">
+    </div>
+    <label>Apply sorting: </label>
+    <div class="btn-group" data-toggle="buttons">
+      <label class="btn btn-primary">
+        <input type="radio" name="sort-by" value="description-asc" id="radio1"> Description asc ➚
+      </label>
+      <label class="btn btn-primary">
+        <input type="radio" name="sort-by" value="description-desc" id="radio2"> Description desc ➘
+      </label>
+      <label class="btn btn-primary">
+        <input type="radio" name="sort-by" value="price-asc" id="radio3"> Price asc ➚
+      </label>
+      <label class="btn btn-primary">
+        <input type="radio" name="sort-by" value="price-desc" id="radio4"> Price desc ➘
+      </label>
+      <label class="btn btn-primary">
+        <input type="radio" name="sort-by" value="none" id="radio5"> Don't sort ╳
+      </label>
+    </div>
+    <button type="submit" class="btn btn-primary" id="submit-btn">Apply</button> <!---->
+  </form>
+</div>
