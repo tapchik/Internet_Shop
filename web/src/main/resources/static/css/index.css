@@ -8,7 +8,14 @@ table th {
 }
 
 .cart-counter {
-    position: absolute;
-    right: 0px;
-    bottom: 0px;
+    //position: absolute;
+    //right: 0px;
+    //bottom: 0px;
+}
+
+.city-picker {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    vertical-align: middle;
 }
