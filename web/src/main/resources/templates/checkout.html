@@ -18,7 +18,7 @@
 <body>
     <h1>Checkout at Fistashka</h1>
     <div th:each="cart_item : ${cart_items}" class="cart-items-at-checkout-container">
-        <div th:insert="fragments/cart-item.html :: cart-item(${cart_item.key}, ${cart_item.value})"> </div>
+        <div th:insert="fragments/cart-item.html :: cart-item(${cart_item.key}, ${cart_item.get('value')}, ${}(id=${employee.get('product_id')}))"> </div>
     </div>
 </body>
 </html>

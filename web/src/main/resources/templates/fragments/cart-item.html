@@ -1,5 +1,5 @@
-<!-- this fragment displays single product details based on given arguments -->
-<div th:fragment="cart-item(key, value)" class="cart-item-info">
+<!-- this fragment displays cart item details based on given arguments -->
+<div th:fragment="cart-item(key, value)" class="cart-item-info" xmlns:th="http://www.w3.org/1999/xhtml">
 
   <div>
     <img src="https://cdn1.ozone.ru/s3/multimedia-2/6416880254.jpg" style="width:200px;height:200px;">
@@ -8,10 +8,15 @@
     <a th:text="${key}"></a>
     <a th:text="${value}"></a>
   </div>
+  <div>
+    <button class="" name="delete-from-cart" th:value="${product_id}">-</button>
+    <button class="" name="decrease-qty" th:value="${product_id}">-</button>
+    <button class="" name="increase-qty" th:value="${product_id}">-</button>
+  </div>
   <!--
   <div>
     <div th:text="${price}" class="price-tag"></div>
-    <button class="add-to-cart" name="add-to-cart" th:value="${id}">Add to cart</button>
+
   </div>-->
 
 </div>
