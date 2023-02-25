@@ -16,12 +16,12 @@ public class ProductRepository {
 
     private ArrayList<Product> FillStorage() {
         ArrayList<Product> a_box = new ArrayList<Product>();
-        a_box.add(new Product("https://cdn1.ozone.ru/s3/multimedia-2/6416880254.jpg","iPhone 10", 41499, new Date(), "1"));
-        a_box.add(new Product("https://cdn1.ozone.ru/s3/multimedia-2/6416880254.jpg","iPhone 11", 49999, new Date(), "2"));
-        a_box.add(new Product("https://cdn1.ozone.ru/s3/multimedia-2/6416880254.jpg","iPhone 12", 54999, new Date(), "3"));
-        a_box.add(new Product("https://cdn1.ozone.ru/s3/multimedia-2/6416880254.jpg","Microwave", 1113499, new Date(), "4"));
-        a_box.add(new Product("https://cdn1.ozone.ru/s3/multimedia-2/6416880254.jpg","Samsung S22", 159999, new Date(),"5"));
-        a_box.add(new Product("https://cdn1.ozone.ru/s3/multimedia-2/6416880254.jpg","Samsung S22 Ultra", 65999, new Date(), "6"));
+        a_box.add(new Product("https://i.ebayimg.com/00/s/MTYwMFgxNjAw/z/RkkAAOSwtspdTBqx/$_57.JPG?set_id=8800005007","Apple iPhone 10", 41499, new Date(), "iph010"));
+        a_box.add(new Product("https://cdn0.youla.io/files/images/360_360/63/31/63317929e0929665ca7d1f29-1.jpg","Apple iPhone 11", 49999, new Date(), "iph011"));
+        a_box.add(new Product("https://cdn1.ozone.ru/s3/multimedia-2/6416880254.jpg","Apple iPhone 12", 54999, new Date(), "iph012"));
+        a_box.add(new Product("https://static.onlinetrade.ru/img/items/b/mikrovolnovaya_pech_solo_daewoo_kor_6lbrc_2.jpg","Microwave", 15299, new Date(), "wave01"));
+        a_box.add(new Product("https://avatars.mds.yandex.net/get-marketpic/988047/picf4f8b98517e27cd9407013305336e11d/orig","Samsung Galaxy S22", 58999, new Date(),"sam22"));
+        a_box.add(new Product("https://cdn1.ozone.ru/s3/multimedia-u/6389646822.jpg","Samsung Galaxy S22 Ultra", 65999, new Date(), "sam22u"));
         return a_box;
     }
 
@@ -51,4 +51,14 @@ public class ProductRepository {
         }
         return products;
     }
+
+    public Product getProduct(String product_id) {
+        for (Product product : this.storage) {
+            if (product.getId() == product_id) {
+                return product;
+            }
+        }
+        return null;
+    }
+
 }

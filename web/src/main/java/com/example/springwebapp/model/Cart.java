@@ -2,7 +2,7 @@ package com.example.springwebapp.model;
 
 import java.util.HashMap;
 
-public class Cart {
+public class Cart extends HashMap<String, Integer> {
     public HashMap<String, Integer> cart_storage;
 
     public Cart() {
