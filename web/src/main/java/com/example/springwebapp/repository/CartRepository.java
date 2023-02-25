@@ -49,7 +49,7 @@ public class CartRepository {
             carts.put(session, new Cart());
     }
 
-    private Cart getCart(HttpSession session) {
+    public Cart getCart(HttpSession session) {
         this.addSessionIfDoesntExist(session);
         return carts.get(session);
     }

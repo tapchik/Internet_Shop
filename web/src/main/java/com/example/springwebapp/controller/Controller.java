@@ -3,6 +3,7 @@ package com.example.springwebapp.controller;
 import com.example.springwebapp.model.Cart;
 import com.example.springwebapp.model.Product;
 import com.example.springwebapp.repository.CartRepository;
+import com.example.springwebapp.repository.OrderRepository;
 import com.example.springwebapp.repository.ProductRepository;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,11 +23,13 @@ public class Controller {
 
     private ProductRepository productRepository;
     private CartRepository cartRepository;
+    private OrderRepository orderRepository;
     private int temporary_count;
 
     public Controller() {
         productRepository = new ProductRepository();
         cartRepository = new CartRepository();
+        orderRepository = new OrderRepository();
         temporary_count = 0;
     }
 
@@ -82,4 +85,12 @@ public class Controller {
         model.addAttribute("items_in_cart", items_in_cart);
         return "fragments/cart-counter";
     }
+
+    @RequestMapping("/make_order")
+    public void fragmentMakeOrderButton(Model model, HttpSession session, @RequestParam(name="city") String city) {
+        // TODO Сохранить заказ в базу данных и опустошить корзину
+        Cart cart = cartRepository.getCart(session);
+
+    }
+
 }

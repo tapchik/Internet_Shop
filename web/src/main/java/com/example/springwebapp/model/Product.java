@@ -7,10 +7,10 @@ public class Product {
     private String image_path;
     private String description;
     private Integer price;
-    private Date availableFrom;
+    private String availableFrom;
     private String id;
 
-    public Product(final String image_path, final String description, final Integer price, final Date availableFrom, final String id) {
+    public Product(final String image_path, final String description, final Integer price, final String availableFrom, final String id) {
         this.image_path = image_path;
         this.description = description;
         this.price = price;
@@ -18,7 +18,7 @@ public class Product {
         this.id = id;
     }
 
-    public Product(final String description, final Integer price, final Date availableFrom, final String id) {
+    public Product(final String description, final Integer price, final String availableFrom, final String id) {
         this.image_path = "https://cdn1.ozone.ru/s3/multimedia-2/6416880254.jpg";
         this.description = description;
         this.price = price;
@@ -48,11 +48,11 @@ public class Product {
 
     public String getId() { return this.id; }
 
-    public Date getAvailableFrom() {
+    public String getAvailableFrom() {
         return this.availableFrom;
     }
 
-    public void setAvailableFrom(final Date availableFrom) {
+    public void setAvailableFrom(final String availableFrom) {
         this.availableFrom = availableFrom;
     }
 
