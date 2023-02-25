@@ -36,7 +36,9 @@ public class Cart extends HashMap<String, Integer> {
     }
 
     public String countItemsOfProduct(String product_id) {
-        return this.get(product_id).toString();
+        if (this.containsKey(product_id))
+            return this.get(product_id).toString();
+        return "0";
     }
 
     public int countOfAllProducts() {
