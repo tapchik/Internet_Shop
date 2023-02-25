@@ -54,7 +54,7 @@ public class ProductRepository {
 
     public Product getProduct(String product_id) {
         for (Product product : this.storage) {
-            if (product.getId() == product_id) {
+            if (product.getId().equals(product_id)) {
                 return product;
             }
         }
