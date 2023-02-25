@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 //import com.example.springwebapp.repository.ShopRepository;
 
@@ -63,9 +64,7 @@ public class Controller {
     @RequestMapping("/checkout")
     public String documentCheckout(Model model, HttpSession session) {
         ArrayList<HashMap<String, String>> cart_items = cartRepository.getCartItems(session, productRepository);
-
         model.addAttribute("cart_items", cart_items);
-
         return "checkout";
     }
 
@@ -87,6 +86,32 @@ public class Controller {
         String items_in_cart = String.valueOf(value);
         model.addAttribute("items_in_cart", items_in_cart);
         return "fragments/cart-counter";
+    }
+
+    @RequestMapping(value="/cart_increase")
+    @ResponseBody
+    public String cartIncrease(Model model, HttpSession session, @RequestParam(name="product_id") String product_id) {
+        cartRepository.plusOneItemToCart(session, product_id);
+        String new_amount = cartRepository.amountOf(session, product_id);
+        return new_amount;
+    }
+
+    @RequestMapping("/cart_decrease")
+    @ResponseBody
+    public String cartDecrease(Model model, HttpSession session, @RequestParam(name="product_id") String product_id) {
+        // TODO fix error when zero amount
+        cartRepository.minusOneItemFromCart(session, product_id);
+        String new_amount = cartRepository.amountOf(session, product_id);
+        return new_amount;
+    }
+
+    @RequestMapping("/cart_remove")
+    @ResponseBody
+    public String cartRemove(Model model, HttpSession session, @RequestParam(name="product_id") String product_id) {
+        // TODO fix error when zero amount
+        cartRepository.removeProductFromCart(session, product_id);
+        String new_amount = cartRepository.amountOf(session, product_id);
+        return new_amount;
     }
 
     @RequestMapping("/make_order")

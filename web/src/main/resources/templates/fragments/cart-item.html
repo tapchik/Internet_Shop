@@ -1,23 +1,26 @@
 <!-- this fragment displays cart item details based on given arguments -->
-<div th:fragment="cart-item(key, value)" class="cart-item-info" xmlns:th="http://www.w3.org/1999/xhtml">
+<div th:fragment="cart_item(product_id, description, image_path, price, availableFrom, quantity)" class="cart-item-info" xmlns:th="http://www.w3.org/1999/xhtml">
 
-  <div>
-    <img src="https://cdn1.ozone.ru/s3/multimedia-2/6416880254.jpg" style="width:200px;height:200px;">
-  </div>
-  <div>
-    <a th:text="${key}"></a>
-    <a th:text="${value}"></a>
-  </div>
-  <div>
-    <button class="" name="delete-from-cart" th:value="${product_id}">-</button>
-    <button class="" name="decrease-qty" th:value="${product_id}">-</button>
-    <button class="" name="increase-qty" th:value="${product_id}">-</button>
-  </div>
-  <!--
-  <div>
-    <div th:text="${price}" class="price-tag"></div>
+    <div>
+        <img th:src="${image_path}" style="width:200px;height:200px;">
+    </div>
+    <div>
+        <a th:text="${description}"></a>
+    </div>
+    <div style="display: flex; flex-direction: column;">
+        <div th:text="${price}" class="price-tag"></div>
+        <div style="display: flex; justify-content: center;">
+            <button type="button" class="btn btn-light" name="decrease-qty" th:value="${product_id}">➖</button>
+            <p class="qty-label" th:id="${product_id}" th:text="${quantity}"></p>
+            <button type="button" class="btn btn-light" name="increase-qty" th:value="${product_id}">➕</button>
+            <button type="button" class="btn btn-light" name="delete-from-cart" th:value="${product_id}">❌</button>
+        </div>
+    </div>
+    <!--
+    <div>
+      <div th:text="${price}" class="price-tag"></div>
 
-  </div>-->
+    </div>-->
 
 </div>
 

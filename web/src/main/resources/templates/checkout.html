@@ -5,6 +5,7 @@
     <link rel="stylesheet" th:href="@{/css/index.css}"/>
     <link rel="stylesheet" th:href="@{/css/buttons.css}"/>
     <link rel="stylesheet" th:href="@{/css/listofproducts.css}"/>
+    <link rel="stylesheet" th:href="@{/css/checkout.css}"/>
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
@@ -15,10 +16,76 @@
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
+
 <body>
-    <h1>Checkout at Fistashka</h1>
-    <div th:each="cart_item : ${cart_items}" class="cart-items-at-checkout-container">
-        <div th:insert="fragments/cart-item.html :: cart-item(${cart_item.key}, ${cart_item.get('value')}, ${}(id=${employee.get('product_id')}))"> </div>
+
+    <script>
+    //
+    $('body').on('click', 'button[name="increase-qty"]', function() {
+        var product_id = $(this).val().toString();
+        var parameters = `?product_id=${product_id}`;
+        $.ajax({type: "POST",
+            url: '/cart_increase' + parameters,
+            dataType: "text",
+            success:function(result) {
+                console.log("Increasing quantity of product_id=" + product_id + " by one");
+                console.log("New amount is " + result);
+                $('p#'+product_id).text(result);
+        }});
+    });
+    </script>
+
+    <script>
+    //
+    $('body').on('click', 'button[name="decrease-qty"]', function() {
+        var product_id = $(this).val().toString();
+        var parameters = `?product_id=${product_id}`;
+        $.ajax({type: "POST",
+            url: '/cart_decrease' + parameters,
+            dataType: "text",
+            success:function(result) {
+                console.log("Decreasing quantity of product_id=" + product_id + " by one");
+                console.log("New amount is " + result);
+                $('p#'+product_id).text(result);
+        }});
+    });
+    </script>
+
+    <script>
+    //
+    $('body').on('click', 'button[name="delete-from-cart"]', function() {
+        var product_id = $(this).val().toString();
+        var parameters = `?product_id=${product_id}`;
+        $.ajax({type: "POST",
+            url: '/delete-from-cart' + parameters,
+            dataType: "text",
+            success:function(result) {
+                console.log("Removing product_id=" + product_id + " from cart");
+                console.log("New amount is " + result);
+                $('p#'+product_id).text(result);
+        }});
+    });
+    </script>
+
+    <div class="container">
+
+        <h1>Checkout at Fistashka</h1>
+
+        <div th:each="cart_item : ${cart_items}" class="cart-items-at-checkout-container">
+            <div th:insert="fragments/cart-item.html :: cart_item(${cart_item['product_id']},
+                                                                  ${cart_item['description']},
+                                                                  ${cart_item['image_path']},
+                                                                  ${cart_item['price']},
+                                                                  ${cart_item['availableFrom']},
+                                                                  ${cart_item['quantity']})"> </div>
+            <!-- <p th:text="${cart_item['product_id']}"></p> -->
+        </div>
+
+        <div class="cart-counter" xmlns:th="http://www.w3.org/1999/xhtml">
+            <button type="button" class="btn btn-primary btn-lg" id="make-order-btn">Make an order, total: [[${items_in_cart}]]</button>
+        </div>
+
     </div>
+
 </body>
 </html>

@@ -16,3 +16,18 @@
 #cart-btn:hover {
     background-color: #FF4F37;
 }
+
+#make-order-btn {
+    position: fixed;
+    bottom: 0px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    border-radius: 25px;
+    background-color: #F15A45;
+    border: 3px solid #FF8C7C;
+}
+
+#cart-btn:hover {
+    background-color: #FF4F37;
+}
