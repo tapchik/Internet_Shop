@@ -38,7 +38,7 @@
             console.log('Current city cookie is not set');
         } else {
             var city = getCookie('current_city');
-            console.log('Current city coolie equals ' + city);
+            console.log('Current city cookie equals ' + city);
         }
         $('#interface-current-city').text(city);
     });
@@ -68,7 +68,6 @@
 
     <script>
     $(document).ready(function() {
-        // checks 'Don't sort' by default
         if ($('input[name="sort-by"]:checked').length == 0) {
             $('#radio5').prop('checked', true);
         }
@@ -101,13 +100,12 @@
         </script>
 
         <script>
-            // script saves chosen city to cookies and changes text in interface
             $('body').on('click', '#save-current-city', function() {
-                var city = $("select[name='city-selected']").val();
-                if (city != "none") {
-                    setCookie('current_city', city);
-                    console.log("Cookie 'current_city' was saved with value: " + city);
-                    $('#interface-current-city').text(city);
+                var selected_city = $("select[name='city-selected']").val();
+                if (selected_city != "none") {
+                    setCookie('current_city', selected_city);
+                    console.log("Cookie 'current_city' was saved with value: " + selected_city);
+                    $('#interface-current-city').text(selected_city);
                 }
             });
         </script>
