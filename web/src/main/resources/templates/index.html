@@ -12,11 +12,36 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+    <script>
+         function getCookie(key) {
+            var keyValue = document.cookie.match('(^|;) ?' + key + '=([^;]*)(;|$)');
+            return keyValue ? keyValue[2] : null;
+        }
+    </script>
+
 </head>
+
 <body>
+
+<script>
+    // make order
+    $('body').on('click', '#make-order', function() {
+        console.log('1');
+        var city = getCookie('current_city');
+        var parameters = `?city=${city}`;
+        $.ajax({type: "POST",
+            url: '/make_order' + parameters,
+            dataType: "text",
+            success:function(result) {
+                //
+        }});
+    });
+</script>
+
 <div class="container">
     <a href="http://localhost:8080/catalogue">Go to /catalogue</a>
-    <button > </button>
+    <button id="make-order">Make Order</button>
 </div>
 </body>
 </html>

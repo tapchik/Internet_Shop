@@ -17,9 +17,24 @@ public class CartRepository {
         carts = new HashMap<HttpSession, Cart>();
     }
 
-    public void addProductToCart(HttpSession session, String product_id) {
+    public void plusOneItemToCart(HttpSession session, String product_id) {
         this.addSessionIfDoesntExist(session);
         carts.get(session).addToCart(product_id);
+    }
+
+    public String amountOf(HttpSession session, String product_id) {
+        this.addSessionIfDoesntExist(session);
+        return carts.get(session).countItemsOfProduct(product_id);
+    }
+
+    public void minusOneItemFromCart(HttpSession session, String product_id) {
+        this.addSessionIfDoesntExist(session);
+        carts.get(session).deleteOneFromCart(product_id);
+    }
+
+    public void removeProductFromCart(HttpSession session, String product_id) {
+        this.addSessionIfDoesntExist(session);
+        carts.get(session).deleteProductFromCart(product_id);
     }
 
     public int countItemsInCart(HttpSession session) {
@@ -44,13 +59,13 @@ public class CartRepository {
         return cart_items;
     }
 
-    private void addSessionIfDoesntExist(HttpSession session) {
-        if (!this.carts.containsKey(session))
-            carts.put(session, new Cart());
-    }
-
     public Cart getCart(HttpSession session) {
         this.addSessionIfDoesntExist(session);
         return carts.get(session);
+    }
+
+    private void addSessionIfDoesntExist(HttpSession session) {
+        if (!this.carts.containsKey(session))
+            carts.put(session, new Cart());
     }
 }

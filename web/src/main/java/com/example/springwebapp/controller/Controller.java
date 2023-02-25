@@ -1,6 +1,7 @@
 package com.example.springwebapp.controller;
 
 import com.example.springwebapp.model.Cart;
+import com.example.springwebapp.model.Order;
 import com.example.springwebapp.model.Product;
 import com.example.springwebapp.repository.CartRepository;
 import com.example.springwebapp.repository.OrderRepository;
@@ -8,7 +9,9 @@ import com.example.springwebapp.repository.ProductRepository;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -79,7 +82,7 @@ public class Controller {
 
     @RequestMapping("/add_to_cart")
     public String fragmentCartCounterButton(Model model, HttpSession session, @RequestParam(name="product_id") String product_id) {
-        cartRepository.addProductToCart(session, product_id);
+        cartRepository.plusOneItemToCart(session, product_id);
         int value = cartRepository.countItemsInCart(session);
         String items_in_cart = String.valueOf(value);
         model.addAttribute("items_in_cart", items_in_cart);
@@ -87,10 +90,14 @@ public class Controller {
     }
 
     @RequestMapping("/make_order")
-    public void fragmentMakeOrderButton(Model model, HttpSession session, @RequestParam(name="city") String city) {
+    public String fragmentMakeOrderButton(Model model, HttpSession session, @RequestParam(name="city") String city) {
         // TODO Сохранить заказ в базу данных и опустошить корзину
-        Cart cart = cartRepository.getCart(session);
-
+        orderRepository.makeOrder(new Date().toString(), new Date().toString(), city);
+        //cartRepository.deleteCartForSession(session);
+        /*for (Order order: orderRepository ) {
+            System.out.println(order.order_city + " " + order.order_time);
+        }*/
+        return "ok";
     }
 
 }
