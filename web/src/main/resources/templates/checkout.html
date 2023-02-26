@@ -20,7 +20,6 @@
 <body>
 
     <script>
-    //
     $('body').on('click', 'button[name="increase-qty"]', function() {
         var product_id = $(this).val().toString();
         var parameters = `?product_id=${product_id}`;
@@ -28,9 +27,10 @@
             url: '/cart_increase' + parameters,
             dataType: "text",
             success:function(result) {
-                console.log("Increasing quantity of product_id=" + product_id + " by one");
-                console.log("New amount is " + result);
-                $('p#'+product_id).text(result);
+                const jsonResponse = JSON.parse(result);
+                console.log("Quantity of product_id="+product_id+" just increased by one and now equals "+jsonResponse['new_amount']);
+                $('p#'+product_id).text(jsonResponse['new_amount']);
+                $('#make-order-btn').text('Make an order, total: ' + jsonResponse['order_price']);
         }});
     });
     </script>
@@ -44,9 +44,15 @@
             url: '/cart_decrease' + parameters,
             dataType: "text",
             success:function(result) {
-                console.log("Decreasing quantity of product_id=" + product_id + " by one");
-                console.log("New amount is " + result);
-                $('p#'+product_id).text(result);
+                const jsonResponse = JSON.parse(result);
+                if (jsonResponse['new_amount'] == '0') {
+                    $('#cont-'+product_id).remove();
+                    console.log("product_id="+product_id+" was removed because it's amount just became zero");
+                } else {
+                    $('p#'+product_id).text(jsonResponse['new_amount']);
+                    console.log("Quantity of product_id="+product_id+" just decreased by one and now equals "+jsonResponse['new_amount']);
+                }
+                $('#make-order-btn').text('Make an order, total: ' + jsonResponse['order_price']);
         }});
     });
     </script>
@@ -57,12 +63,13 @@
         var product_id = $(this).val().toString();
         var parameters = `?product_id=${product_id}`;
         $.ajax({type: "POST",
-            url: '/delete-from-cart' + parameters,
+            url: '/cart_remove' + parameters,
             dataType: "text",
             success:function(result) {
-                console.log("Removing product_id=" + product_id + " from cart");
-                console.log("New amount is " + result);
-                $('p#'+product_id).text(result);
+                const jsonResponse = JSON.parse(result);
+                $('#cont-'+product_id).remove();
+                $('#make-order-btn').text('Make an order, total: ' + jsonResponse['order_price']);
+                console.log("product_id="+product_id+" was completely removed from cart");
         }});
     });
     </script>
@@ -71,7 +78,7 @@
 
         <h1>Checkout at Fistashka</h1>
 
-        <div th:each="cart_item : ${cart_items}" class="cart-items-at-checkout-container">
+        <div th:each="cart_item : ${cart_items}" class="cart-items-at-checkout-container" th:id="${'cont-'+cart_item['product_id']}">
             <div th:insert="fragments/cart-item.html :: cart_item(${cart_item['product_id']},
                                                                   ${cart_item['description']},
                                                                   ${cart_item['image_path']},

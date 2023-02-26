@@ -1,7 +1,5 @@
 package com.example.springwebapp.controller;
 
-import com.example.springwebapp.model.Cart;
-import com.example.springwebapp.model.Order;
 import com.example.springwebapp.model.Product;
 import com.example.springwebapp.repository.CartRepository;
 import com.example.springwebapp.repository.OrderRepository;
@@ -90,28 +88,34 @@ public class Controller {
 
     @RequestMapping(value="/cart_increase")
     @ResponseBody
-    public String cartIncrease(Model model, HttpSession session, @RequestParam(name="product_id") String product_id) {
+    public Map<String, String> cartIncrease(Model model, HttpSession session, @RequestParam(name="product_id") String product_id) {
         cartRepository.plusOneItemToCart(session, product_id);
         String new_amount = cartRepository.amountOf(session, product_id);
-        return new_amount;
+        String order_price = "120,000₽"; //cartRepository.getBeautifulOrderPrice(session, productRepository);
+        Map<String, String> response = Map.of("new_amount", new_amount, "order_price", order_price);
+        return response;
     }
 
     @RequestMapping("/cart_decrease")
     @ResponseBody
-    public String cartDecrease(Model model, HttpSession session, @RequestParam(name="product_id") String product_id) {
+    public Map<String, String> cartDecrease(Model model, HttpSession session, @RequestParam(name="product_id") String product_id) {
         // TODO fix error when zero amount
         cartRepository.minusOneItemFromCart(session, product_id);
         String new_amount = cartRepository.amountOf(session, product_id);
-        return new_amount;
+        String order_price = "110,000₽"; //cartRepository.getBeautifulOrderPrice(session, productRepository);
+        Map<String, String> response = Map.of("new_amount", new_amount, "order_price", order_price);
+        return response;
     }
 
     @RequestMapping("/cart_remove")
     @ResponseBody
-    public String cartRemove(Model model, HttpSession session, @RequestParam(name="product_id") String product_id) {
+    public Map<String, String> cartRemove(Model model, HttpSession session, @RequestParam(name="product_id") String product_id) {
         // TODO fix error when zero amount
         cartRepository.removeProductFromCart(session, product_id);
         String new_amount = cartRepository.amountOf(session, product_id);
-        return new_amount;
+        String order_price = "100,000₽"; //cartRepository.getBeautifulOrderPrice(session, productRepository);
+        Map<String, String> response = Map.of("new_amount", new_amount, "order_price", order_price);
+        return response;
     }
 
     @RequestMapping("/make_order")
