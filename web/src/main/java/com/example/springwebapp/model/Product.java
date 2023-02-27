@@ -30,9 +30,9 @@ public class Product {
         String new_price = "";
         for (Integer i = price.toString().length()-1; i >= 0; i--) {
             new_price = price.toString().charAt(i) + new_price;
-            Integer len = (new_price.replace(".","").length()%3);
-            if (len.equals(0) && price.toString().length()!=new_price.replace(".","").length()) {
-                new_price = "." + new_price;
+            Integer len = (new_price.replace(",","").length()%3);
+            if (len.equals(0) && price.toString().length()!=new_price.replace(",","").length()) {
+                new_price = "," + new_price;
             }
         }
         return new_price + "₽";

@@ -64,6 +64,26 @@ public class CartRepository {
         return carts.get(session);
     }
 
+    public String getBeautifulOrderPrice(HttpSession session, ProductRepository productRepository) {
+        Integer order_price = 0;
+        for (String product_id: getCart(session).keySet()) {
+            order_price += productRepository.getProduct(product_id).getPrice()*getCart(session).get(product_id);
+        }
+        return orderPriceToBeautiful(order_price);
+    }
+
+    private String orderPriceToBeautiful(Integer price) {
+        String new_price = "";
+        for (Integer i = price.toString().length()-1; i >= 0; i--) {
+            new_price = price.toString().charAt(i) + new_price;
+            Integer len = (new_price.replace(",","").length()%3);
+            if (len.equals(0) && price.toString().length()!=new_price.replace(",","").length()) {
+                new_price = "," + new_price;
+            }
+        }
+        return new_price + "₽";
+    }
+
     private void addSessionIfDoesntExist(HttpSession session) {
         if (!this.carts.containsKey(session))
             carts.put(session, new Cart());

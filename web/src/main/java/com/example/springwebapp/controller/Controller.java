@@ -91,7 +91,7 @@ public class Controller {
     public Map<String, String> cartIncrease(Model model, HttpSession session, @RequestParam(name="product_id") String product_id) {
         cartRepository.plusOneItemToCart(session, product_id);
         String new_amount = cartRepository.amountOf(session, product_id);
-        String order_price = "120,000₽"; //cartRepository.getBeautifulOrderPrice(session, productRepository);
+        String order_price = cartRepository.getBeautifulOrderPrice(session, productRepository);
         Map<String, String> response = Map.of("new_amount", new_amount, "order_price", order_price);
         return response;
     }
@@ -102,7 +102,7 @@ public class Controller {
         // TODO fix error when zero amount
         cartRepository.minusOneItemFromCart(session, product_id);
         String new_amount = cartRepository.amountOf(session, product_id);
-        String order_price = "110,000₽"; //cartRepository.getBeautifulOrderPrice(session, productRepository);
+        String order_price = cartRepository.getBeautifulOrderPrice(session, productRepository);
         Map<String, String> response = Map.of("new_amount", new_amount, "order_price", order_price);
         return response;
     }
@@ -113,7 +113,7 @@ public class Controller {
         // TODO fix error when zero amount
         cartRepository.removeProductFromCart(session, product_id);
         String new_amount = cartRepository.amountOf(session, product_id);
-        String order_price = "100,000₽"; //cartRepository.getBeautifulOrderPrice(session, productRepository);
+        String order_price = cartRepository.getBeautifulOrderPrice(session, productRepository);
         Map<String, String> response = Map.of("new_amount", new_amount, "order_price", order_price);
         return response;
     }
