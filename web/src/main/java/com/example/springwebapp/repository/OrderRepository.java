@@ -17,7 +17,17 @@ public class OrderRepository {
         orderRepository = new ArrayList<Order>();
     }
 
-    public void makeOrder(String id, String order_time, String order_city) {
-        this.orderRepository.add(new Order(id, order_time, order_city));
+    public ArrayList<Order> getOrderRepository() {
+        return this.orderRepository;
+    }
+
+    public boolean makeOrder(String id, String order_time, String order_city) {
+        try {
+            this.orderRepository.add(new Order(id, order_time, order_city));
+        }
+        catch (Exception err) {
+            return false;
+        }
+        return true;
     }
 }

@@ -41,12 +41,12 @@ public class Cart extends HashMap<String, Integer> {
         return "0";
     }
 
-    public int countOfAllProducts() {
+    public String countOfAllProducts() {
         Integer count = 0;
         for(Integer val: this.values()) {
             count += val;
         }
-        return count;
+        return count.toString();
     }
 
     public HashMap<String, Integer> getContent() {

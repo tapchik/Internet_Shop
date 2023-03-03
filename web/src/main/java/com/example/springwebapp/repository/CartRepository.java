@@ -37,7 +37,7 @@ public class CartRepository {
         carts.get(session).deleteProductFromCart(product_id);
     }
 
-    public int countItemsInCart(HttpSession session) {
+    public String countItemsInCart(HttpSession session) {
         this.addSessionIfDoesntExist(session);
         return this.getCart(session).countOfAllProducts();
     }

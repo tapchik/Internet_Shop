@@ -2,9 +2,9 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Fistashka</title>
-    <link rel="stylesheet" th:href="@{/css/index.css}"/>
-    <link rel="stylesheet" th:href="@{/css/buttons.css}"/>
-    <link rel="stylesheet" th:href="@{/css/listofproducts.css}"/>
+    <link th:href="@{/css/index.css}" rel="stylesheet" />
+    <link th:href="@{/css/buttons.css}" rel="stylesheet" />
+    <link th:href="@{/css/listofproducts.css}" rel="stylesheet" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
@@ -14,118 +14,33 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <!-- JavaScript for listofproducts -->
+    <script th:src="@{/js/listofproducts.js}" type="text/javascript"></script>
+</head>
 
-    <script>
+<body>
+    <!-- JavaScript for cart -->
+    <script th:src="@{/js/cart.js}" type="text/javascript"></script>
 
-    function setCookie(key, value) {
-        var expires = new Date();
-        var minutes = 10;
-        expires.setTime(expires.getTime() + minutes * 60 * 1000); //
-        document.cookie = key + '=' + value + ';expires=' + expires.toUTCString();
-    }
+    <!-- JavaScript for cookie -->
+    <script th:src="@{/js/cookie.js}" type="text/javascript"></script>
 
-    function getCookie(key) {
-        var keyValue = document.cookie.match('(^|;) ?' + key + '=([^;]*)(;|$)');
-        return keyValue ? keyValue[2] : null;
-    }
+    <div class="container">
 
-    // CITY PICKER
-    // learned from here
-    // var str = 'https://www.codeproject.com/tips/1009583/how-to-use-cookies-in-jquery-without-a-plugin';
-    $(document).ready(function() {
-        if (!getCookie('current_city')) {
-            var city = "No city selected";
-            console.log('Current city cookie is not set');
-        } else {
-            var city = getCookie('current_city');
-            console.log('Current city cookie equals ' + city);
-        }
-        $('#interface-current-city').text(city);
-    });
-    </script>
+        <h1>Internet Shop "Fistashka"</h1>
 
-    <script>
-    // refreshes list of products without reloading page
-    $(document).ready(function() {
-        $("#filteringform").submit(function(e) {
-            e.preventDefault();
-            var filter = $('input[name=filter]').val().toString();
-            var sort_by = $('input[name=sort-by]:checked').val().toString();
-            var parameters = `?filter=${filter}&sort-by=${sort_by}`;
-            var current_path = '/catalogue';
-            var api_path = `/listofproducts`;
-            $.ajax({type: "POST",
-                url: api_path + parameters,
-                //data: {"filter": filter, "sort_by": sort_by},
-                dataType: "text",
-                success:function(result) {
-                    $("#listik").html(result);
-                    history.replaceState(null, null, window.location.pathname + parameters); // could use pushState
-            }});
-        });
-    });
-    </script>
+        <div th:insert="fragments/city-picker.html :: div"></div>
 
-    <script>
-    $(document).ready(function() {
-        if ($('input[name="sort-by"]:checked').length == 0) {
-            $('#radio5').prop('checked', true);
-        }
-    });
-    </script>
+        <p th:text="${sid}">Current sid is </p>
 
-    </head>
+        <div th:insert="fragments/cart-counter.html :: div"></div>
 
-    <body>
+        <div th:insert="fragments/filtering-form.html :: div"></div>
 
-        <script>
-            // adds product to cart
-            $('body').on('click', '.add-to-cart', function() {
-                var product_id = $(this).val().toString();
-                console.log("Adding to cart product with id: " + product_id);
-                var parameters = `?product_id=${product_id}`;
-                $.ajax({type: "POST",
-                    url: '/add_to_cart' + parameters,
-                    dataType: "text",
-                    success:function(result) {
-                        $(".cart-counter").html(result);
-                }});
-            });
-        </script>
+        <div th:insert="fragments/listofproducts.html :: div" id="listik"></div>
 
-        <script>
-            $('body').on('click', '#cart-btn', function() {
-                window.location.assign("/checkout");
-            });
-        </script>
+        <div th:insert="fragments/modal-city.html :: div"></div>
 
-        <script>
-            $('body').on('click', '#save-current-city', function() {
-                var selected_city = $("select[name='city-selected']").val();
-                if (selected_city != "none") {
-                    setCookie('current_city', selected_city);
-                    console.log("Cookie 'current_city' was saved with value: " + selected_city);
-                    $('#interface-current-city').text(selected_city);
-                }
-            });
-        </script>
-
-        <div class="container">
-
-            <h1>Internet Shop "Fistashka"</h1>
-
-            <div th:insert="fragments/city-picker.html :: div"></div>
-
-            <p th:text="${sid}">Current sid is </p>
-
-            <div th:insert="fragments/cart-counter.html :: div"></div>
-
-            <div th:insert="fragments/filtering-form.html :: div"></div>
-
-            <div th:insert="fragments/listofproducts.html :: div" id="listik"></div>
-
-            <div th:insert="fragments/modal-city.html :: div"></div>
-
-        </div>
-    </body>
+    </div>
+</body>
 </html>
