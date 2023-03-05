@@ -23,8 +23,8 @@ $('body').on('click', 'button[name="decrease-qty"]', function() {
             success:function(result) {
                 const jsonResponse = JSON.parse(result);
                 if (jsonResponse['new_amount'] == '0') {
-                    $('#cont-'+product_id).remove();
-                    console.log("product_id="+product_id+" was removed because it's amount just became zero");
+                    $('p#'+product_id).text(jsonResponse['new_amount']);
+                    console.log("product_id="+product_id+" will stay at zero, can't decrease");
                 } else {
                     $('p#'+product_id).text(jsonResponse['new_amount']);
                     console.log("Quantity of product_id="+product_id+" just decreased by one and now equals "+jsonResponse['new_amount']);

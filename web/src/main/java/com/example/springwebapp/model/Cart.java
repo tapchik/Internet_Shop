@@ -17,13 +17,15 @@ public class Cart extends HashMap<String, Integer> {
         }
     }
 
-    public void deleteOneFromCart(String product_id) {
-        if (this.containsKey(product_id) && this.get(product_id) >= 1) {
-            this.put(product_id, this.get(product_id) - 1);
-            if (this.get(product_id).equals(0)) {
-                this.remove(product_id);
-            }
+    public boolean deleteOneFromCart(String product_id) {
+        if (this.containsKey(product_id) == false) {
+            return false;
         }
+        if (this.get(product_id) >= 1) {
+            int new_amount = this.get(product_id) - 1;
+            this.put(product_id, new_amount);
+        }
+        return true;
     }
 
     public void deleteProductFromCart(String product_id) {
