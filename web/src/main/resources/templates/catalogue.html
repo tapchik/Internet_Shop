@@ -29,11 +29,16 @@
 
         <h1>Internet Shop "Fistashka"</h1>
 
-        <div th:insert="fragments/city-picker.html :: div"></div>
+        <div class="city-picker" xmlns:th="http://www.w3.org/1999/xhtml">
+            <p id="interface-current-city" th:text="${current_city}" style="margin: 0"></p>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#pick-a-city" style="margin-left:10px">Change city</button>
+        </div>
 
         <p th:text="${sid}">Current sid is </p>
 
-        <div th:insert="fragments/cart-counter.html :: div"></div>
+        <div class="cart-counter">
+            <button type="button" class="btn btn-primary btn-lg" id="cart-btn">Items in cart: [[${items_in_cart}]]</button>
+        </div>
 
         <div th:insert="fragments/filtering-form.html :: div"></div>
 

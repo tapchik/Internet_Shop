@@ -77,11 +77,12 @@ public class Controller {
     }
 
     @RequestMapping("/add_to_cart")
+    @ResponseBody
     public String fragmentCartCounterButton(Model model, HttpSession session, @RequestParam(name="product_id") String product_id) {
         cartRepository.plusOneItemToCart(session, product_id);
         String items_in_cart = cartRepository.countItemsInCart(session);
         model.addAttribute("items_in_cart", items_in_cart);
-        return "fragments/cart-counter";
+        return "Items in cart: " + items_in_cart;
     }
 
     @RequestMapping(value="/cart_increase")

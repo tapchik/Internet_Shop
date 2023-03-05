@@ -7,7 +7,7 @@ $('body').on('click', '.add-to-cart', function() {
         url: '/add_to_cart' + parameters,
         dataType: "text",
         success:function(result) {
-            $(".cart-counter").html(result);
+            $("#cart-btn").text(result);
     }});
 });
 
