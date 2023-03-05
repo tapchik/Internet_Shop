@@ -1,8 +1,3 @@
-import com.example.springwebapp.controller.Controller;
-import com.example.springwebapp.model.Product;
-
-import java.util.ArrayList;
-
 public class Testing {
 
     public void Test1() {

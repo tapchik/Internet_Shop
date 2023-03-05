@@ -1,33 +1,24 @@
 package com.example.springwebapp.repository;
 
-import com.example.springwebapp.model.Cart;
 import com.example.springwebapp.model.Order;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-import java.lang.reflect.Array;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
+import java.util.List;
 
-public class OrderRepository {
+@Repository
+public interface OrderRepository extends JpaRepository<Order, Long> {
 
-    ArrayList<Order> orderRepository;
+    List<Order> findByCity(String city);
 
-    public OrderRepository() {
-        orderRepository = new ArrayList<Order>();
-    }
 
-    public ArrayList<Order> getOrderRepository() {
-        return this.orderRepository;
-    }
-
-    public boolean makeOrder(String id, String order_time, String order_city) {
+    /* public default boolean makeOrder(String city) {
         try {
-            this.orderRepository.add(new Order(id, order_time, order_city));
+
         }
-        catch (Exception err) {
+        catch (Exception ex) {
             return false;
         }
         return true;
-    }
+    } */
 }

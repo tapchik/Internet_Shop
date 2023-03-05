@@ -1,37 +1,42 @@
 package com.example.springwebapp.controller;
 
+import com.example.springwebapp.model.Cart;
+import com.example.springwebapp.model.OrderDetails;
 import com.example.springwebapp.model.Order;
 import com.example.springwebapp.model.Product;
+import com.example.springwebapp.repository.OrderDetailsRepository;
 import com.example.springwebapp.repository.CartRepository;
 import com.example.springwebapp.repository.OrderRepository;
 import com.example.springwebapp.repository.ProductRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.sql.Time;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-//import com.example.springwebapp.repository.ShopRepository;
-
 import javax.servlet.http.HttpSession;
 
-@org.springframework.stereotype.Controller
-public class Controller {
+@Controller
+public class MyController {
 
     private ProductRepository productRepository;
     private CartRepository cartRepository;
+
+    @Autowired
     private OrderRepository orderRepository;
 
-    public Controller() {
+    @Autowired
+    private OrderDetailsRepository orderDetailsRepository;
+
+    public MyController() {
         productRepository = new ProductRepository();
         cartRepository = new CartRepository();
-        orderRepository = new OrderRepository();
     }
 
     @RequestMapping("/")
@@ -117,14 +122,27 @@ public class Controller {
 
     @RequestMapping("/make_order")
     @ResponseBody
-    public String fragmentMakeOrderButton(Model model, HttpSession session, @RequestParam(name="city") String city) {
-        Boolean success = orderRepository.makeOrder(new Date().toString(), new Date().toString(), city);
+    public String makeOrder(Model model, HttpSession session, @RequestParam(name="city") String city) {
+        // exit if city not provided
         if (city.equals("null")) {
             throw new Error("City is null");
         }
-        if (success.equals(false)) {
+        long new_id = orderRepository.count() + 1;
+        Order order = new Order(new_id, city);
+        orderRepository.save(order);
+        Cart cart = cartRepository.getCart(session);
+        for (Map.Entry<String, Integer> entry : cart.entrySet()) {
+            String productid = entry.getKey();
+            Integer qty = entry.getValue();
+            OrderDetails orderDetails = new OrderDetails(new_id, productid, qty);
+            orderDetailsRepository.save(orderDetails);
+        }
+        Boolean success1 = true;
+
+        if (success1.equals(false)) {
             return "Error";
         }
+
         session.invalidate();
         return "OK";
     }
