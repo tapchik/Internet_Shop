@@ -7,6 +7,10 @@ table th {
     border: 1px solid black;
 }
 
+.filteringform-container {
+    padding-bottom: 20px;
+}
+
 .cart-counter {
     //position: absolute;
     //right: 0px;

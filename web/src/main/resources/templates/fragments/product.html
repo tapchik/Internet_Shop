@@ -1,16 +1,16 @@
 <!-- this fragment displays single product details based on given arguments -->
-<div th:fragment="product(image_path, description, price, availableFrom, id)" class="product-info">
+<div th:fragment="product(image_path, description, price, availableFrom, id)" class="product-info" xmlns:th="http://www.thymeleaf.org">
 
     <div>
         <img th:src="${image_path}" style="width:200px;height:200px;">
     </div>
-    <div>
-        <a th:text="${description}"></a>
-        <a th:text="${availableFrom}"></a>
+    <div style="display: flex; flex-direction: column;">
+        <p th:text="${description}"></p>
+        <p th:text="${availableFrom}"></p>
     </div>
     <div>
         <div th:text="${price}" class="price-tag"></div>
-        <button class="add-to-cart" name="add-to-cart" th:value="${id}">Add to cart</button>
+        <button type="button" class="add-to-cart btn btn-success" name="add-to-cart" th:value="${id}">Add to cart</button>
     </div>
 
 </div>
