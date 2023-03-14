@@ -1,0 +1,25 @@
+html {
+    background-color: azure;
+}
+
+table td,
+table th {
+    border: 1px solid black;
+}
+
+.filteringform-container {
+    padding-bottom: 20px;
+}
+
+.cart-counter {
+    //position: absolute;
+    //right: 0px;
+    //bottom: 0px;
+}
+
+.city-picker {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    vertical-align: middle;
+}

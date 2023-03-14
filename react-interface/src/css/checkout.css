@@ -1,0 +1,30 @@
+p.qty-label {
+    margin-left: 0px;
+    margin-right: 0px;
+    margin-bottom: 0px;
+    padding-left: 12px;
+    padding-right: 12px;
+    font-family: Cursive;
+    font-weight: bold;
+    font-size: 20px;
+    color: #635994;
+}
+
+.cart-items-at-checkout-container {
+    display: flex;
+    flex-direction: column;
+    background-color: DodgerBlue;
+}
+
+.cart-items-at-checkout-container > div {
+    background-color: #f1f1f1;
+    margin: 10px;
+    text-align: center;
+    line-height: 30px;
+    font-size: 15px;
+}
+
+.cart-item-info {
+    display: flex;
+        justify-content: space-between;
+}
