@@ -1,13 +1,31 @@
 package com.example.springwebapp.model;
 
-public class Order {
-    public final String id;
-    public final String order_time;
-    public final String order_city;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-    public Order(final String id, final String order_time, final String order_city) {
-        this.id= id;
-        this.order_time = order_time;
-        this.order_city = order_city;
+import javax.persistence.*;
+import java.time.OffsetDateTime;
+
+@Entity
+@Table(name = "orders")
+@NoArgsConstructor
+@Getter
+@Setter
+public class Order {
+
+    @Id
+    public long id;
+
+    @Column(name = "timestamp")
+    public OffsetDateTime timestamp;
+
+    @Column(name = "city")
+    public String city;
+
+    public Order(long id, String order_city) {
+        this.id = id;
+        this.timestamp = OffsetDateTime.now();
+        this.city = order_city;
     }
 }
