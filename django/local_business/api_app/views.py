@@ -21,7 +21,7 @@ class ViewProduct(View):
                 'id': product.id,
                 'title': product.title,
                 'price': product.price,
-                'price_beautiful': "{:,.2f}".format(product.price),
+                'price_beautiful': "{:,.0f} ₽".format(product.price),
                 'image': product.image})
         data = {'products': products_data}
         return JsonResponse(data)
@@ -29,19 +29,27 @@ class ViewProduct(View):
 @method_decorator(csrf_exempt, name='dispatch')
 class ViewCart(View):
     def get(self, request):
-        request_data = json.loads(request.body.decode("utf-8"))
-        session_id = request_data['session_id'] #request.session.session_key
-        cart = Cart.objects.get(session_id=session_id)
+        #request_data = json.loads(request.body.decode("utf-8"))
+        #session_id = request_data['session_id']
+        if request.session.session_key != None:
+            session_id = request.session.session_key
+        else: 
+            session_id = "sess_id_test_233"
+        
+        cart, created = Cart.objects.get_or_create(session_id=session_id)
         cart_items = []
+        total_items_in_cart = 0
         for cartItem in CartItem.objects.filter(cart=cart):
             cart_items.append({
                 'product_id': cartItem.product.id,
                 'quantity': cartItem.quantity,
                 }) 
+            total_items_in_cart += cartItem.quantity
         response = {
-            'session_id': session_id,
-            'cart_items': cart_items}
-        return JsonResponse(response)
+            'session_id': cart.session_id,
+            'cart_items': cart_items,
+            'total_items_in_cart': total_items_in_cart}
+        return JsonResponse(response, status=201)
 
 @method_decorator(csrf_exempt, name='dispatch')
 class CartIncrease(View):
@@ -58,17 +66,27 @@ class CartIncrease(View):
             return JsonResponse(response, status=500)
         product = Product.objects.get(id=product_id)
 
-        request_data = json.loads(request.body.decode("utf-8"))
-        session_id = request_data['session_id'] #request.session.session_key
+        #request_data = json.loads(request.body.decode("utf-8"))
+        #session_id = request_data['session_id']
+        if request.session.session_key != None:
+            session_id = request.session.session_key
+        else: 
+            session_id = "sess_id_test_233"
+        
         cart, created = Cart.objects.get_or_create(session_id=session_id)
         cartItem, created = CartItem.objects.get_or_create(cart=cart, product=product)
         cartItem.quantity += 1
         cartItem.save()
 
+        total_items_in_cart = 0
+        for cartItem in CartItem.objects.filter(cart=cart):
+            total_items_in_cart += cartItem.quantity;
+
         response = {
             "message": f"Product with id \'{cartItem.product.id}\' is added to the cart",
             "product_id": cartItem.product.id,
-            "new_quantity": cartItem.quantity}
+            "new_quantity": cartItem.quantity,
+            "total_items_in_cart": total_items_in_cart}
         return JsonResponse(response, status=201)
 
 @method_decorator(csrf_exempt, name='dispatch')
@@ -86,8 +104,13 @@ class CartDecrease(View):
             return JsonResponse(response, status=500)
         product = Product.objects.get(id=product_id)
 
-        request_data = json.loads(request.body.decode("utf-8"))
-        session_id = request_data['session_id'] #request.session.session_key
+        #request_data = json.loads(request.body.decode("utf-8"))
+        #session_id = request_data['session_id']
+        if request.session.session_key != None:
+            session_id = request.session.session_key
+        else: 
+            session_id = "sess_id_test_233"
+        
         cart, created = Cart.objects.get_or_create(session_id=session_id)
         if not CartItem.objects.filter(cart=cart, product=product).exists():
             response = {
@@ -102,7 +125,7 @@ class CartDecrease(View):
         cartItem.save()
 
         response = {
-            "message": f"Product with id=\'{product.id}\') is decreased by one from the cart",
+            "message": f"Product with id=\'{product.id}\' is decreased by one from the cart",
             "product_id": cartItem.product.id,
             "new_quantity": cartItem.quantity}
         return JsonResponse(response, status=201)
@@ -122,8 +145,13 @@ class CartRemove(View):
             return JsonResponse(response, status=500)
         product = Product.objects.get(id=product_id)
 
-        request_data = json.loads(request.body.decode("utf-8"))
-        session_id = request_data['session_id'] #request.session.session_key
+        #request_data = json.loads(request.body.decode("utf-8"))
+        #session_id = request_data['session_id']
+        if request.session.session_key != None:
+            session_id = request.session.session_key
+        else: 
+            session_id = "sess_id_test_233"
+
         cart, created = Cart.objects.get_or_create(session_id=session_id)
         if not CartItem.objects.filter(cart=cart, product=product).exists():
             response = {
@@ -146,7 +174,11 @@ class CartRemove(View):
 class MakeOrder(View):
     def post(self, request):
         request_data = json.loads(request.body.decode("utf-8"))
-        session_id = request_data['session_id'] #request.session.session_key
+        #session_id = request_data['session_id']
+        if request.session.session_key != None:
+            session_id = request.session.session_key
+        else: 
+            session_id = "sess_id_test_233"
         cart, created = Cart.objects.get_or_create(session_id=session_id)
         city = request_data['city']
         order = Order.objects.create(city=city)

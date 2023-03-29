@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
+import './css/index.css';
 import reportWebVitals from './reportWebVitals';
 import App from './App';
 import Catalogue from './Catalogue';
@@ -22,7 +22,7 @@ ReactDOM.render((
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <Checkout />
+    <Catalogue />
   </React.StrictMode>
 );
 
