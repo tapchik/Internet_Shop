@@ -5,7 +5,8 @@ import reportWebVitals from './reportWebVitals';
 import App from './App';
 import Catalogue from './Catalogue';
 import Checkout from './Checkout';
-import Routes from './Routes';
+//import Routes from './Routes';
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 
 {/*
@@ -21,9 +22,18 @@ ReactDOM.render((
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
-    <Catalogue />
-  </React.StrictMode>
+  //<React.StrictMode>
+  //  <Catalogue />
+  //</React.StrictMode>
+  <>
+    <Router>
+      <Routes>
+        <Route exact path="/catalogue" element={<Catalogue />} />
+        <Route path="/checkout" element={<Checkout />}/>
+      </Routes>
+    </Router>
+
+  </>
 );
 
 // If you want to start measuring performance in your app, pass a function

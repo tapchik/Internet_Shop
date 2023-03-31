@@ -6,6 +6,7 @@ One-time commands:
 1. `python3 -m venv env` - creates `env` folder
 2. `. env/bin/activate` - activates venv
 3. `pip3 install django` - locally installs django
+4. `pip3 install django-cors-headers` – yes, this is happening
 4. `django-admin startproject my_shop` - creates prject names my_shop
 5. `python manage.py startapp api_app`
 6. `python manage.py createsuperuser`

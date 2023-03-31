@@ -3,7 +3,8 @@ import 'bootstrap/dist/css/bootstrap.css';
 import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import Cookies from 'universal-cookie';
+import Cookies from 'js-cookie';
+//import Cookies from 'universal-cookie';
 import ReactDOM from 'react-dom/client';
 import './css/App.css';
 import './css/buttons.css';
@@ -12,56 +13,9 @@ import './css/index.css';
 import './css/listofproducts.css';
 import $ from 'jquery';
 
-// adds product to cart
-/*
-$('body').on('click', '.add-to-cart', function() {
-    var product_id = $(this).val().toString();
-    var parameters = `?product_id=${product_id}`;
-    $.ajax({type: "POST",
-        url: '/add_to_cart' + parameters,
-        dataType: "text",
-        success:function(result) {
-            $("#cart-btn").text(result);
-    }});
-});*/
-
-class FilteringForm extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            filter: '',
-            order_by: ''
-        }
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-    }
-
-    handleChange(event) {
-        this.setState({value: event.target.value});
-    }
-
-    handleSubmit(event) {
-        alert('A name was submitted: ' + this.state.value);
-        event.preventDefault();
-    }
-}
-
-function Product(props) {
-    return (
-        <div className='product-info'>
-            <div>
-                <img src={props.image} style={{width:'200px', height:'200px'}}/>
-            </div>
-            <div>
-                <a>{props.title}</a>
-            </div>
-            <div style={{display: 'flex', flexDirection: 'column'}}>
-                <p className='price-tag'>{props.price}</p>
-                <button type='button' className='add-to-cart btn btn-success' onClick={props.onClick}>Add to cart</button>
-            </div>
-        </div>
-    )
-}
+import Product from './elements/Product';
+import FilteringForm from './elements/FilteringForm';
+import ModalCity from './elements/ModalCity';
 
 function ButtonGoToCheckout(props) {
     return (
@@ -73,7 +27,7 @@ function ButtonGoToCheckout(props) {
     )
 }
 
-class ModalCity extends React.Component {
+class OldModalCity extends React.Component {
 
     dismissModal = () => { this.props.toggle() }
 
@@ -115,13 +69,19 @@ class ModalCity extends React.Component {
 class Catalogue extends React.Component {
     
     componentDidMount() {
-        fetch('http://127.0.0.1:8000/api/products')
+        Cookies.set('sessionid', 'k435hk345kxkh42l1');
+        fetch('http://localhost:8000/api/products')
             .then(response => response.json())
             .then(data => this.setState({ products: data.products }))
-            .catch(error => console.error('Error: ', error))
-        fetch('http://127.0.0.1:8000/api/cart-items')
+            .catch(error => console.error('Error: ', error));
+        fetch('http://localhost:8000/api/cart-items', {
+                method: 'GET',
+                credentials: 'include',
+            })
             .then(response => response.json())
-            .then(data => this.setState({ total_items_in_cart: data.total_items_in_cart }))
+            .then(data => this.setState({ 
+                total_items_in_cart: data.total_items_in_cart,
+                total_order_price_beautiful: data.total_order_price_beautiful }))
             .catch(error => console.error('Error: ', error))
     }
 
@@ -131,35 +91,63 @@ class Catalogue extends React.Component {
             history: [{squares: Array(9).fill(null)}],
             products: [],
             total_items_in_cart: 0,
+            total_order_price_beautiful: '0',
             stepNumber: 0,
             current_city: 'Not chosen',
             xIsNext: true,
-            showCityPickerModal: false,
+            showModalCity: false,
         }
     }
 
-    btnAddToCartClicked(product_id) {
-        fetch('http://127.0.0.1:8000/api/add-to-cart?product_id='+product_id, {
-            method: 'POST'})
+    refreshListOfProducts() {
+        //e.preventDefault();
+        let filter = document.getElementsByName('filter')[0].value;
+        let sort = document.getElementsByName('sort')[0].value;
+        fetch('http://localhost:8000/api/products?filter='+filter+'&sort='+sort, {
+                method: 'GET',
+                credentials: 'include',
+            })
             .then(response => response.json())
-            .then(data => this.setState({ total_items_in_cart: data.total_items_in_cart }))
+            .then(data => this.setState({ products: data.products }))
+            .catch(error => console.error('Error: ', error));
     }
 
-    toggleModal = () => this.setState({
-        showCityPickerModal: !this.state.showCityPickerModal
-    })
+    btnAddToCartClicked(product_id) {
+        fetch('http://localhost:8000/api/add-to-cart?product_id='+product_id, {
+                method: 'POST',
+                //mode: "cors",
+                credentials: 'include', //same-origin
+                //body: {'sessionid': Cookies.get('sessionid')}
+            })
+            .then(response => response.json())
+            .then(data => this.setState({ 
+                total_items_in_cart: data.total_items_in_cart,
+            }))
+    }
+
+    toggleModal = () => this.setState({showModalCity: !this.state.showModalCity})
+
+    redrawCurrentCity() {
+        this.setState({ 
+            current_city: Cookies.get('current_city'),
+        })
+    }
 
     render() {
         return (
             <Container>
             <h1>Fistashka</h1>
+            <p>{Cookies.get('sessionid')}</p>
 
-            <ModalCity toggle={this.toggleModal} showCityPickerModal={this.state.showCityPickerModal}/>
+            <ModalCity toggleModal={this.toggleModal} show={this.state.showModalCity} saveCurrentCity={() => this.redrawCurrentCity()}/>
             
+
             <div className='city-picker'>
                 <p id="interface-current-city" style={{margin: 0}}>{this.state.current_city}</p>
-                <Button variant='primary' style={{marginLeft: '10px'}} onClick={this.toggleModal}>Change city</Button>
+                <Button variant='outline-secondary' style={{marginLeft: '10px'}} onClick={this.toggleModal}>Change city</Button>
             </div>
+
+            <FilteringForm onClick={() => this.refreshListOfProducts()}/>
 
             <div className='list-of-products-container'>
             {this.state.products.map((product) => (

@@ -14,7 +14,30 @@ from .models import Product, CartItem, Cart, CartItem, Order, OrderDetails
 class ViewProduct(View):
     def get(self, request):
         #count = Product.objects.count()
-        products = Product.objects.all()
+
+        filter = request.GET['filter'] if 'filter' in request.GET else ''
+        print(filter)
+        '''
+        if 'filter' not in request.GET:
+            products = Product.objects.all()
+        else:
+            products = Product.objects.filter(title__contains=request.GET['filter'])
+        '''
+        if 'sort' in request.GET:
+            match request.GET['sort']:
+                case 'title-asc':
+                    products = Product.objects.filter(title__contains=filter).order_by('title')
+                case 'title-desc':
+                    products = Product.objects.filter(title__contains=filter).order_by('-title')
+                case 'price-asc':
+                    products = Product.objects.filter(title__contains=filter).order_by('price')
+                case 'price-desc':
+                    products = Product.objects.filter(title__contains=filter).order_by('-price')
+                case _:
+                    products = Product.objects.filter(title__contains=filter)
+        else:
+            products = Product.objects.all()
+        
         products_data = []
         for product in products:
             products_data.append({
@@ -29,26 +52,27 @@ class ViewProduct(View):
 @method_decorator(csrf_exempt, name='dispatch')
 class ViewCart(View):
     def get(self, request):
-        #request_data = json.loads(request.body.decode("utf-8"))
-        #session_id = request_data['session_id']
-        if request.session.session_key != None:
-            session_id = request.session.session_key
-        else: 
-            session_id = "sess_id_test_233"
-        
+        session_id = request.COOKIES.get('sessionid')
         cart, created = Cart.objects.get_or_create(session_id=session_id)
         cart_items = []
         total_items_in_cart = 0
+        total_order_price = 0
         for cartItem in CartItem.objects.filter(cart=cart):
             cart_items.append({
                 'product_id': cartItem.product.id,
                 'quantity': cartItem.quantity,
+                'title': cartItem.product.title,
+                'price': cartItem.product.price * cartItem.quantity,
+                'price_beautiful': "{:,.0f} ₽".format(cartItem.product.price * cartItem.quantity),
                 }) 
             total_items_in_cart += cartItem.quantity
+            total_order_price += cartItem.product.price * cartItem.quantity
         response = {
             'session_id': cart.session_id,
             'cart_items': cart_items,
-            'total_items_in_cart': total_items_in_cart}
+            'total_items_in_cart': total_items_in_cart,
+            'total_order_price': total_order_price,
+            'total_order_price_beautiful': "{:,.0f} ₽".format(total_order_price)}
         return JsonResponse(response, status=201)
 
 @method_decorator(csrf_exempt, name='dispatch')
@@ -65,14 +89,8 @@ class CartIncrease(View):
             response = {"message": f"Error, no such product with id={product_id}"}
             return JsonResponse(response, status=500)
         product = Product.objects.get(id=product_id)
-
-        #request_data = json.loads(request.body.decode("utf-8"))
-        #session_id = request_data['session_id']
-        if request.session.session_key != None:
-            session_id = request.session.session_key
-        else: 
-            session_id = "sess_id_test_233"
         
+        session_id = request.COOKIES.get('sessionid')
         cart, created = Cart.objects.get_or_create(session_id=session_id)
         cartItem, created = CartItem.objects.get_or_create(cart=cart, product=product)
         cartItem.quantity += 1
@@ -83,7 +101,7 @@ class CartIncrease(View):
             total_items_in_cart += cartItem.quantity;
 
         response = {
-            "message": f"Product with id \'{cartItem.product.id}\' is added to the cart",
+            "message": f"One item of Product(id=\'{cartItem.product.id}\') is added to the cart",
             "product_id": cartItem.product.id,
             "new_quantity": cartItem.quantity,
             "total_items_in_cart": total_items_in_cart}
@@ -104,13 +122,7 @@ class CartDecrease(View):
             return JsonResponse(response, status=500)
         product = Product.objects.get(id=product_id)
 
-        #request_data = json.loads(request.body.decode("utf-8"))
-        #session_id = request_data['session_id']
-        if request.session.session_key != None:
-            session_id = request.session.session_key
-        else: 
-            session_id = "sess_id_test_233"
-        
+        session_id = request.COOKIES.get('sessionid')
         cart, created = Cart.objects.get_or_create(session_id=session_id)
         if not CartItem.objects.filter(cart=cart, product=product).exists():
             response = {
@@ -145,13 +157,7 @@ class CartRemove(View):
             return JsonResponse(response, status=500)
         product = Product.objects.get(id=product_id)
 
-        #request_data = json.loads(request.body.decode("utf-8"))
-        #session_id = request_data['session_id']
-        if request.session.session_key != None:
-            session_id = request.session.session_key
-        else: 
-            session_id = "sess_id_test_233"
-
+        session_id = request.COOKIES.get('sessionid')
         cart, created = Cart.objects.get_or_create(session_id=session_id)
         if not CartItem.objects.filter(cart=cart, product=product).exists():
             response = {
@@ -174,13 +180,10 @@ class CartRemove(View):
 class MakeOrder(View):
     def post(self, request):
         request_data = json.loads(request.body.decode("utf-8"))
-        #session_id = request_data['session_id']
-        if request.session.session_key != None:
-            session_id = request.session.session_key
-        else: 
-            session_id = "sess_id_test_233"
-        cart, created = Cart.objects.get_or_create(session_id=session_id)
         city = request_data['city']
+
+        session_id = request.COOKIES.get('sessionid')
+        cart, created = Cart.objects.get_or_create(session_id=session_id)
         order = Order.objects.create(city=city)
         for cartItem in CartItem.objects.filter(cart=cart):
             product = Product.objects.get(id=cartItem.product.id)
