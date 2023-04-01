@@ -69,6 +69,7 @@ class OldModalCity extends React.Component {
 class Catalogue extends React.Component {
     
     componentDidMount() {
+        this.redrawCurrentCity()
         Cookies.set('sessionid', 'k435hk345kxkh42l1');
         fetch('http://localhost:8000/api/products')
             .then(response => response.json())
@@ -128,9 +129,7 @@ class Catalogue extends React.Component {
     toggleModal = () => this.setState({showModalCity: !this.state.showModalCity})
 
     redrawCurrentCity() {
-        this.setState({ 
-            current_city: Cookies.get('current_city'),
-        })
+        this.setState({ current_city: Cookies.get('current_city') })
     }
 
     render() {
@@ -140,7 +139,6 @@ class Catalogue extends React.Component {
             <p>{Cookies.get('sessionid')}</p>
 
             <ModalCity toggleModal={this.toggleModal} show={this.state.showModalCity} saveCurrentCity={() => this.redrawCurrentCity()}/>
-            
 
             <div className='city-picker'>
                 <p id="interface-current-city" style={{margin: 0}}>{this.state.current_city}</p>
