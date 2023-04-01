@@ -17,6 +17,8 @@ class CartItem(models.Model):
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.PositiveSmallIntegerField(null=False, default=0)
+    def __str__(self):
+        return f"CartItem(SessionId='{self.cart.session_id}', product='{self.product.id}', quantity={self.quantity})"
 
 class Order(models.Model):
     id = models.AutoField(primary_key=True)

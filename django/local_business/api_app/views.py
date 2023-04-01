@@ -10,6 +10,19 @@ from .models import Product, CartItem, Cart, CartItem, Order, OrderDetails
 
 # Create your views here.
 
+def prepareCartItems(cart: Cart) -> list:
+    cart_items = []
+    for cartItem in CartItem.objects.filter(cart=cart):
+        cart_items.append({
+            'product_id': cartItem.product.id,
+            'quantity': cartItem.quantity,
+            'title': cartItem.product.title,
+            'price': cartItem.product.price * cartItem.quantity,
+            'price_beautiful': "{:,.0f} ₽".format(cartItem.product.price * cartItem.quantity),
+            'image': cartItem.product.image,
+            }) 
+    return cart_items
+
 @method_decorator(csrf_exempt, name='dispatch')
 class ViewProduct(View):
     def get(self, request):
@@ -54,23 +67,12 @@ class ViewCart(View):
     def get(self, request):
         session_id = request.COOKIES.get('sessionid')
         cart, created = Cart.objects.get_or_create(session_id=session_id)
-        cart_items = []
-        total_items_in_cart = 0
-        total_order_price = 0
-        for cartItem in CartItem.objects.filter(cart=cart):
-            cart_items.append({
-                'product_id': cartItem.product.id,
-                'quantity': cartItem.quantity,
-                'title': cartItem.product.title,
-                'price': cartItem.product.price * cartItem.quantity,
-                'price_beautiful': "{:,.0f} ₽".format(cartItem.product.price * cartItem.quantity),
-                }) 
-            total_items_in_cart += cartItem.quantity
-            total_order_price += cartItem.product.price * cartItem.quantity
+        
+        cart_items = prepareCartItems(cart)
+        total_order_price = sum(item['price'] for item in cart_items)
         response = {
-            'session_id': cart.session_id,
             'cart_items': cart_items,
-            'total_items_in_cart': total_items_in_cart,
+            'total_items_in_cart': sum(item['quantity'] for item in cart_items),
             'total_order_price': total_order_price,
             'total_order_price_beautiful': "{:,.0f} ₽".format(total_order_price)}
         return JsonResponse(response, status=201)
@@ -96,15 +98,13 @@ class CartIncrease(View):
         cartItem.quantity += 1
         cartItem.save()
 
-        total_items_in_cart = 0
-        for cartItem in CartItem.objects.filter(cart=cart):
-            total_items_in_cart += cartItem.quantity;
-
+        cart_items = prepareCartItems(cart)
+        total_order_price = sum(item['price'] for item in cart_items)
         response = {
-            "message": f"One item of Product(id=\'{cartItem.product.id}\') is added to the cart",
-            "product_id": cartItem.product.id,
-            "new_quantity": cartItem.quantity,
-            "total_items_in_cart": total_items_in_cart}
+            'cart_items': cart_items,
+            'total_items_in_cart': sum(item['quantity'] for item in cart_items),
+            'total_order_price': total_order_price,
+            'total_order_price_beautiful': "{:,.0f} ₽".format(total_order_price)}
         return JsonResponse(response, status=201)
 
 @method_decorator(csrf_exempt, name='dispatch')
@@ -136,10 +136,13 @@ class CartDecrease(View):
             cartItem.quantity -= 1
         cartItem.save()
 
+        cart_items = prepareCartItems(cart)
+        total_order_price = sum(item['price'] for item in cart_items)
         response = {
-            "message": f"Product with id=\'{product.id}\' is decreased by one from the cart",
-            "product_id": cartItem.product.id,
-            "new_quantity": cartItem.quantity}
+            'cart_items': cart_items,
+            'total_items_in_cart': sum(item['quantity'] for item in cart_items),
+            'total_order_price': total_order_price,
+            'total_order_price_beautiful': "{:,.0f} ₽".format(total_order_price)}
         return JsonResponse(response, status=201)
 
 @method_decorator(csrf_exempt, name='dispatch')
@@ -169,11 +172,13 @@ class CartRemove(View):
         cartItem = CartItem.objects.get(cart=cart, product=product)
         cartItem.delete()
 
+        cart_items = prepareCartItems(cart)
+        total_order_price = sum(item['price'] for item in cart_items)
         response = {
-            "message": f"Product with id=\'{product.id}\') was wiped from the cart",
-            "product_id": product.id,
-            "new_quantity": 0,
-        }
+            'cart_items': cart_items,
+            'total_items_in_cart': sum(item['quantity'] for item in cart_items),
+            'total_order_price': total_order_price,
+            'total_order_price_beautiful': "{:,.0f} ₽".format(total_order_price)}
         return JsonResponse(response, status=201)
     
 @method_decorator(csrf_exempt, name='dispatch')
