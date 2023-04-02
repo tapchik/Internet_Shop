@@ -27,45 +27,6 @@ function ButtonGoToCheckout(props) {
     )
 }
 
-class OldModalCity extends React.Component {
-
-    dismissModal = () => { this.props.toggle() }
-
-    render() {
-        return (
-        <div className={`modal fade WelcomeModal ${this.props.showModal ? 'show' : ''}`}//className="modal fade bd-example-modal-sm" 
-            style={{display: `${this.props.showCityPickerModal ? 'block' : 'none'}`,}} 
-            id="pick-a-city" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div className="modal-dialog modal-sm" role="dialogue">
-            <div className="modal-content">
-            <div className="modal-header">
-                <h5 className="modal-title" id="exampleModalLabel">Pick your city</h5>
-                <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div className="modal-body">
-                <select className="form-select" name="city-selected" aria-label="Default select example">
-                <option value="none"defaultValue>Choose your city</option>
-                <option value="Berezniki">Berezniki</option>
-                <option value="Perm">Perm</option>
-                <option value="Moscow">Moscow</option>
-                <option value="Chaykovsk">Chaykovsk</option>
-                <option value="Polazna">Polazna</option>
-                <option value="Dobryanka">Dobryanka</option>
-                </select>
-            </div>
-            <div className="modal-footer">
-                <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" className="btn btn-primary" id="save-current-city" data-dismiss="modal" onClick={this.dismissModal}>Save changes</button>
-            </div>
-            </div>
-        </div>
-        </div>
-        )
-    }
-}
-
 class Catalogue extends React.Component {
     
     componentDidMount() {
@@ -81,21 +42,16 @@ class Catalogue extends React.Component {
             })
             .then(response => response.json())
             .then(data => this.setState({ 
-                total_items_in_cart: data.total_items_in_cart,
-                total_order_price_beautiful: data.total_order_price_beautiful }))
+                total_items_in_cart: data.total_items_in_cart}))
             .catch(error => console.error('Error: ', error))
     }
 
     constructor(props) {
         super(props);
         this.state = {
-            history: [{squares: Array(9).fill(null)}],
             products: [],
             total_items_in_cart: 0,
-            total_order_price_beautiful: '0',
-            stepNumber: 0,
             current_city: 'Not chosen',
-            xIsNext: true,
             showModalCity: false,
         }
     }

@@ -100,6 +100,7 @@ class Checkout extends React.Component {
     btnOrderClicked() {
         let current_city = Cookies.get('current_city')
         alert('Your order is placed and will arive to city '+current_city+' in a week!')
+        window.location.assign("/Catalogue")
         // TODO переход на catalogue
     }
 
@@ -129,7 +130,7 @@ class Checkout extends React.Component {
                             btnRemoveClicked={() => this.btnRemoveClicked(cart_item.product_id)} />
                     ))}
                 </div>
-                <BtnMakeOrder total_price={'1 000 000 Р'} onClick={() => this.btnOrderClicked()} />
+                <BtnMakeOrder total_price={this.state.total_order_price_beautiful} onClick={() => this.btnOrderClicked()} />
             </Container>
         )
     }
