@@ -100,8 +100,12 @@ class Checkout extends React.Component {
     btnOrderClicked() {
         let current_city = Cookies.get('current_city')
         alert('Your order is placed and will arive to city '+current_city+' in a week!')
-        window.location.assign("/Catalogue")
-        // TODO переход на catalogue
+        fetch('http://localhost:8000/api/make-order', {
+            method: 'POST',
+            body: JSON.stringify({ city: current_city }),
+            credentials: 'include',
+        })
+        window.location.assign("/catalogue")
     }
 
     render() {
