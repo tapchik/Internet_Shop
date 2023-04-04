@@ -91,24 +91,26 @@ class Catalogue extends React.Component {
     render() {
         return (
             <Container>
-            <h1>Fistashka</h1>
-            <p>{Cookies.get('sessionid')}</p>
+                <Container style={{marginTop: 20}}>
+                    <h1 style={{textAlign: 'center'}}>Fistashka</h1>
+                    <p style={{textAlign: 'center'}}>Catalogue</p>
+                </Container>
 
-            <ModalCity toggleModal={this.toggleModal} show={this.state.showModalCity} saveCurrentCity={() => this.redrawCurrentCity()}/>
+                <ModalCity toggleModal={this.toggleModal} show={this.state.showModalCity} saveCurrentCity={() => this.redrawCurrentCity()}/>
 
-            <div className='city-picker'>
-                <p id="interface-current-city" style={{margin: 0}}>{this.state.current_city}</p>
-                <Button variant='outline-secondary' style={{marginLeft: '10px'}} onClick={this.toggleModal}>Change city</Button>
-            </div>
+                <div className='city-picker'>
+                    <p id="interface-current-city" style={{margin: 0}}>{this.state.current_city}</p>
+                    <Button variant='outline-secondary' style={{marginLeft: '10px'}} onClick={this.toggleModal}>Change city</Button>
+                </div>
 
-            <FilteringForm onClick={() => this.refreshListOfProducts()}/>
+                <FilteringForm onClick={() => this.refreshListOfProducts()}/>
 
-            <div className='list-of-products-container'>
-            {this.state.products.map((product) => (
-                <Product image={product.image} title={product.title} id={product.id} price={product.price_beautiful} key={product.id} onClick={() => this.btnAddToCartClicked(product.id)} />
-            ))}
-            </div>
-            <ButtonGoToCheckout total_items_in_cart={this.state.total_items_in_cart} onClick={() => window.location.assign("/checkout")}/>
+                <div className='list-of-products-container'>
+                {this.state.products.map((product) => (
+                    <Product image={product.image} title={product.title} id={product.id} price={product.price_beautiful} key={product.id} onClick={() => this.btnAddToCartClicked(product.id)} />
+                ))}
+                </div>
+                <ButtonGoToCheckout total_items_in_cart={this.state.total_items_in_cart} onClick={() => window.location.assign("/checkout")}/>
             </Container>
         )
     }

@@ -111,7 +111,10 @@ class Checkout extends React.Component {
     render() {
         return (
             <Container>
-                <h1>Fistashka</h1>
+                <Container style={{marginTop: 20}}>
+                    <h1 style={{textAlign: 'center'}}>Fistashka</h1>
+                    <p style={{textAlign: 'center'}}>Checkout</p>
+                </Container>
 
                 <ModalCity toggleModal={this.toggleModal} show={this.state.showModalCity} saveCurrentCity={() => this.redrawCurrentCity()}/>
 

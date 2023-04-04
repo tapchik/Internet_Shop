@@ -1,7 +1,7 @@
 .list-of-products-container {
     display: flex;
     flex-direction: column;
-    background-color: #a9cad9;
+    margin-bottom: 20px;
 }
 
 .list-of-products-container > div {
@@ -15,6 +15,7 @@
 .product-info {
     display: flex;
     justify-content: space-between;
+    border: 4px ridge #ADD8E6;
 }
 
 .price-tag {
@@ -27,4 +28,10 @@
     font-weight: bold;
     font-size: 27px;
     color: green;
+}
+
+.product-image {
+    margin: 20px;
+    margin-left: 40px;
+    border: 2px ridge #ADD8E6;
 }

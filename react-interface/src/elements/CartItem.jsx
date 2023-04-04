@@ -4,15 +4,15 @@ import Button from 'react-bootstrap/Button';
 function CartItem(props) {
     return (
         <div className="cart-item-info">
-            <div>
+            <div className="product-image">
                 <img src={props.image_path} style={{width:'200px', height:'200px'}}/>
             </div>
-            <div>
+            <div style={{lineHeight: '75px'}}>
                 <a>
                     {props.title}
                 </a>
             </div>
-            <div style={{display: 'flex', flexDirection: 'column'}}>
+            <div style={{display: 'flex', flexDirection: 'column', margin: 20, marginTop: 40, marginRight: 40}}>
                 <div className="price-tag">
                     {props.price}
                 </div>

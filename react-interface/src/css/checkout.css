@@ -13,7 +13,6 @@ p.qty-label {
 .cart-items-at-checkout-container {
     display: flex;
     flex-direction: column;
-    background-color: DodgerBlue;
 }
 
 .cart-items-at-checkout-container > div {
@@ -26,5 +25,6 @@ p.qty-label {
 
 .cart-item-info {
     display: flex;
-        justify-content: space-between;
+    justify-content: space-between;
+    border: 4px ridge #ADD8E6;
 }
