@@ -41,6 +41,10 @@ class Checkout extends React.Component {
     componentDidMount() {
         this.refreshListOfCartItems()
         this.redrawCurrentCity();
+        let city = Cookies.get('current_city')
+        if (!city) {
+            this.toggleModal()
+        }
     }
 
     toggleModal = () => this.setState({showModalCity: !this.state.showModalCity})
