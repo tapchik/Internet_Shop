@@ -45,7 +45,7 @@ class Catalogue extends React.Component {
                 total_items_in_cart: data.total_items_in_cart}))
             .catch(error => console.error('Error: ', error))
         let city = Cookies.get('current_city')
-        if (city==undefined) {
+        if (!city) {
             this.toggleModal()
         }
     }
